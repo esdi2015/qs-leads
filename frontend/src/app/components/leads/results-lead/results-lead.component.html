@@ -1,0 +1,14 @@
+<mat-accordion *ngIf="lead">
+  <mat-expansion-panel *ngFor="let row of lead.progress">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        ID: {{ row.id }}
+      </mat-panel-title>
+      <mat-panel-description [style.color]="row.status === 'Success' ? 'green' : 'red'">
+        {{ row.status }} <mat-icon>{{ row.status === "Success" ? "check" : "close" }}</mat-icon>
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+    <h3>Response</h3>
+    <p>{{ row.response }}</p>
+  </mat-expansion-panel>
+</mat-accordion>

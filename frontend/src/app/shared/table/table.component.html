@@ -1,0 +1,39 @@
+<div class="container mat-elevation-z0">
+  <div class="loading-shade" *ngIf="isLoadingResults">
+    <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+  </div>
+
+  <div class="table-container">
+
+    <table mat-table [dataSource]="data" class="example-table" matSort matSortActive="createdAt" matSortDisableClear
+      matSortDirection="desc">
+      <!-- Number Column -->
+      <ng-container [matColumnDef]="column.key" *ngFor="let column of columns">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear [disabled]="!column.sort">{{ column.header
+          }}</th>
+        <td mat-cell *matCellDef="let row">
+          <ng-container *ngIf="!column.actions">
+            <span [innerHTML]="column.cell(row)" *ngIf="column.cell"></span>
+            <mat-progress-bar color="primary" [value]="column.progress(row)" *ngIf="column.progress && column.conditions && column.conditions.progress && column.conditions.progress(row)"></mat-progress-bar>
+            <button mat-stroked-button *ngIf="column.button" (click)="column.button(row).click">{{
+              column.button(row).label }}</button>
+          </ng-container>
+          <ng-container *ngIf="column.actions">
+            <button mat-button (click)="column.actions.clone(row, true)" *ngIf="column.actions.clone">CLONE</button>
+            <button mat-button (click)="column.actions.edit(row)" *ngIf="column.actions.edit">EDIT</button>
+            <button mat-button (click)="column.actions.delete(row)" *ngIf="column.actions.delete">DELETE</button>
+            <button mat-button (click)="column.actions.stop(row)" *ngIf="column.actions.stop && column.conditions && column.conditions.stop">STOP</button>
+            <button mat-button (click)="column.actions.run(row)" *ngIf="column.actions.run && column.conditions && column.conditions.run">RUN</button>
+            <button mat-button (click)="column.actions.result(row)" *ngIf="column.actions.result && column.conditions && column.conditions.result">RESULTS</button>
+            <button mat-button (click)="column.actions.download(row)" *ngIf="column.actions.download && column.conditions && column.conditions.download">DOWNLOAD</button>
+          </ng-container>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </div>
+
+  <mat-paginator [length]="resultsLength" [pageSize]="10" class="mat-paginator-sticky"></mat-paginator>
+</div>
