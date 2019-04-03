@@ -8,33 +8,33 @@
 module.exports = {
   attributes: {
     name: {
-      type: "string",
+      type: 'string',
       required: true
     },
     filename: {
-      type: "string",
+      type: 'string',
       required: true
     },
     filepath: {
-      type: "string",
+      type: 'string',
       required: true
     },
     status: {
-      type: "string",
+      type: 'string',
       required: false
     },
     client: {
-      model: "clients"
+      model: 'clients'
     },
     campaign: {
-      model: "campaigns"
+      model: 'campaigns'
     },
     data: {
-      type: "json",
+      type: 'json',
       required: true
     },
     progress: {
-      type: "json",
+      type: 'json',
       required: false
     }
   }

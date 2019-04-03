@@ -45,12 +45,12 @@ const routes: Routes = [
     canActivate: [AuthCanActivate]
   },
   {
-    path: "campaigns/edit/:id",
+    path: "campaigns/clone/:id",
     component: CreateCampaignComponent,
     canActivate: [AuthCanActivate]
   },
   {
-    path: "campaigns/clone/:id",
+    path: "campaigns/edit/:id",
     component: CreateCampaignComponent,
     canActivate: [AuthCanActivate]
   },

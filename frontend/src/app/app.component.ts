@@ -10,7 +10,7 @@ import { AuthService } from "./services/auth.service";
 })
 export class AppComponent implements OnInit {
   public form: FormGroup;
-  public sidenavOpened: boolean = true;
+  public sidenavOpened = true;
 
   constructor(
     public router: Router,
@@ -43,5 +43,10 @@ export class AppComponent implements OnInit {
     this.auth.logout().subscribe(() => {
       this.router.navigateByUrl("/");
     });
+  }
+
+  search_leads() {
+    // alert("search_leads");
+    this.router.navigateByUrl("/leads");
   }
 }

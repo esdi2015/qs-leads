@@ -14,6 +14,7 @@ import {
   transition,
   animate
 } from "@angular/animations";
+// import { url } from "inspector";
 
 @Component({
   selector: "app-create-campaign",
@@ -70,6 +71,7 @@ export class CreateCampaignComponent implements OnInit {
         if (routeUrl.indexOf("clone") !== -1) {
           this.isClone = true;
         }
+        console.log(params);
         if (params.id) {
           this.loading = true;
           this.isEdit = true;
@@ -120,6 +122,7 @@ export class CreateCampaignComponent implements OnInit {
       url: ["", Validators.required],
       delay: [1, Validators.required],
       client: [null, Validators.required],
+      status: [null, Validators.required],
       structure: this.fb.array([])
     });
     this.clientsFiltered = this.form.get("client").valueChanges.pipe(
@@ -161,7 +164,7 @@ export class CreateCampaignComponent implements OnInit {
                 title: "Import Fields",
                 content: `Found ${
                   Object.keys(data.content).length
-                  } fields, replace current fields with imported ?`
+                } fields, replace current fields with imported ?`
               }
             });
             dialogRef.afterClosed().subscribe(result => {

@@ -10,6 +10,7 @@ export class AuthService {
   constructor(private http: HttpClient) {}
 
   public login(email: string, password: string) {
+    console.log("angular log in");
     return this.http
       .post(`${environment.api}auth/login`, { email, password })
       .pipe(

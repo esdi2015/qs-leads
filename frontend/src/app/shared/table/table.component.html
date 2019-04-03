@@ -19,7 +19,7 @@
               column.button(row).label }}</button>
           </ng-container>
           <ng-container *ngIf="column.actions">
-            <button mat-button (click)="column.actions.clone(row, true)" *ngIf="column.actions.clone">CLONE</button>
+            <button mat-button (click)="column.actions.clone(row)" *ngIf="column.actions.clone">CLONE</button>
             <button mat-button (click)="column.actions.edit(row)" *ngIf="column.actions.edit">EDIT</button>
             <button mat-button (click)="column.actions.delete(row)" *ngIf="column.actions.delete">DELETE</button>
             <button mat-button (click)="column.actions.stop(row)" *ngIf="column.actions.stop && column.conditions && column.conditions.stop">STOP</button>

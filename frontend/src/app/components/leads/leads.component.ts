@@ -28,7 +28,8 @@ export class LeadsComponent implements OnInit {
   ) {
     this.api = {
       serviceName: "leadsService",
-      serviceCall: "list"
+      // serviceCall: "list"
+      serviceCall: "searchLeads"
     };
     this.columns = [
       {
@@ -53,8 +54,8 @@ export class LeadsComponent implements OnInit {
         cell: (row: any) => `${row.status}`,
         progress: (row: any) => {
           const parsed = row.status.replace("Processing ", "").split("/");
-          const current = parseInt(parsed[0]);
-          const total = parseInt(parsed[1]);
+          const current = parseInt(parsed[0], 10);
+          const total = parseInt(parsed[1], 10);
           return (current / total) * 100;
         },
         conditions: {

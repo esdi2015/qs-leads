@@ -14,6 +14,16 @@ export class LeadsService {
     );
   }
 
+  public searchLeads(sort: string, direction: string, page: number, search_text: string) {
+    console.log("searchLeads");
+    if (!search_text) {
+      search_text = "234026";
+    }
+    return this.http.get(
+      `${environment.api}leads?sort=${sort}&direction=${direction}&page=${page}&search=${search_text}`
+    );
+  }
+
   public listAll() {
     return this.http.get(`${environment.api}leads/all`);
   }

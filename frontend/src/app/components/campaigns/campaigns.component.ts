@@ -7,12 +7,15 @@ import { DialogQuestionComponent } from "src/app/shared/dialog-question/dialog-q
 
 import * as moment from "moment";
 import * as _ from "lodash";
+import { HtmlTagDefinition } from "@angular/compiler";
+
 
 @Component({
   selector: "app-campaigns",
   templateUrl: "./campaigns.component.html",
   styleUrls: ["./campaigns.component.scss"]
 })
+
 export class CampaignsComponent implements OnInit {
   @ViewChild("appTable")
   appTable: TableComponent;
@@ -62,6 +65,12 @@ export class CampaignsComponent implements OnInit {
         sort: true,
         cell: (row: any) =>
           `${moment(row.updatedAt).format("YYYY-MM-DD H:mm:ss")}`
+      },
+      {
+        key: "status",
+        header: "Status",
+        sort: false,
+        cell: (row: any) => `${row.status}`
       },
       {
         key: "actions",

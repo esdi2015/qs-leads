@@ -8,23 +8,27 @@
 module.exports = {
   attributes: {
     name: {
-      type: "string",
+      type: 'string',
       required: true
     },
     url: {
-      type: "string",
+      type: 'string',
       required: true
     },
     delay: {
-      type: "number",
+      type: 'number',
       required: true
     },
     client: {
-      model: "clients",
+      model: 'clients',
+      required: true
+    },
+    status: {
+      type: 'string',
       required: true
     },
     structure: {
-      type: "json",
+      type: 'json',
       required: true
     }
   }

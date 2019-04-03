@@ -4,20 +4,21 @@
  * @description :: Server-side actions for handling incoming requests.
  * @help        :: See https://sailsjs.com/docs/concepts/actions
  */
-const Papa = require("papaparse");
-const XLSX = require("node-xlsx");
-const fs = require("fs");
+const Papa = require('papaparse');
+const XLSX = require('node-xlsx');
+const fs = require('fs');
 
 module.exports = {
   list: async (req, res) => {
+    console.log('list');
     try {
-      const sort = req.query.sort || "createdAt";
-      const direction = (req.query.direction || "DESC").toUpperCase();
+      const sort = req.query.sort || 'createdAt';
+      const direction = (req.query.direction || 'DESC').toUpperCase();
       const page = req.query.page || 0;
 
       const leads = await Leads.find()
-        .populate("client")
-        .populate("campaign")
+        .populate('client')
+        .populate('campaign')
         .sort(`${sort} ${direction}`)
         .limit(10)
         .skip(page * 10);
@@ -40,6 +41,31 @@ module.exports = {
       return res.serverError(e);
     }
   },
+  searchLeads: async (req, res) => {
+    try {
+      const sort = req.query.sort || 'createdAt';
+      const direction = (req.query.direction || 'DESC').toUpperCase();
+      const page = req.query.page || 0;
+      const search = req.query.search || null;
+      const leads = await Leads.find(
+        { name :  { 'contains' : search } }
+      ).populate('client')
+       .populate('campaign')
+        .sort(`${sort} ${direction}`)
+        .limit(10)
+        .skip(page * 10);
+
+      const leadsTotal = await Leads.count();
+      return res.ok({
+        content: leads,
+        metadata: {
+          total: leadsTotal
+        }
+      });
+    } catch (e) {
+      return res.serverError(e);
+    }
+  },
   single: async (req, res) => {
     try {
       const lead = await Leads.findOne({ id: req.params.id });
@@ -50,26 +76,29 @@ module.exports = {
   },
   create: async (req, res) => {
     try {
-      req.file("file").upload(
+      req.file('file').upload(
         {
           maxBytes: 10000000
         },
         async (err, files) => {
-          if (err) return res.serverError(err);
-          if (files.length === 0)
-            return res.serverError({ message: "No files uploaded" });
+          if (err) {
+            return res.serverError(err);
+          }
+          if (files.length === 0) {
+            return res.serverError({ message: 'No files uploaded' });
+          }
 
           let inputFile;
           let parsedOutput;
           let result;
 
-          if (files[0].fd.endsWith(".csv")) {
-            inputFile = fs.readFileSync(files[0].fd, { encoding: "utf8" });
+          if (files[0].fd.endsWith('.csv')) {
+            inputFile = fs.readFileSync(files[0].fd, { encoding: 'utf8' });
             parsedOutput = Papa.parse(inputFile, { header: true });
             result = parsedOutput.data;
           } else if (
-            files[0].fd.endsWith(".xls") ||
-            files[0].fd.endsWith(".xlsx")
+            files[0].fd.endsWith('.xls') ||
+            files[0].fd.endsWith('.xlsx')
           ) {
             inputFile = fs.readFileSync(files[0].fd);
             parsedOutput = XLSX.parse(inputFile);
@@ -104,8 +133,8 @@ module.exports = {
               resultData.push({ id: index, value: newRow });
               resultProgress.push({
                 id: index,
-                status: "Pending",
-                response: ""
+                status: 'Pending',
+                response: ''
               });
             }
             index++;
@@ -115,18 +144,18 @@ module.exports = {
             name: req.body.name,
             filename: files[0].filename,
             filepath: files[0].fd,
-            status: "Pending",
+            status: 'Pending',
             client: req.body.client,
             campaign: req.body.campaign,
             data: resultData,
             progress: resultProgress
           }).fetch();
 
-          SocketService.emit("process_job", { id: newLead.id });
+          SocketService.emit('process_job', { id: newLead.id });
 
           return res.ok({
             content: {},
-            message: "Lead created"
+            message: 'Lead created'
           });
         }
       );
@@ -144,19 +173,19 @@ module.exports = {
           email: '',
           response: row.response
         };
-	
-        if(data[index]["value"]["Email"]) {
-		result.email = data[index]["value"]["Email"];
-	}else if(data[index]["value"]["EM"]){
-		result.email = data[index]["value"]["EM"];
- 	}
- 
-	return result;
+
+        if(data[index]['value']['Email']) {
+          result.email = data[index]['value']['Email'];
+        }else if(data[index]['value']['EM']){
+          result.email = data[index]['value']['EM'];
+        }
+
+        return result;
       });
       const csv = Papa.unparse(mapped);
       const filename = `${lead.name}-results.csv`;
       res.attachment(filename);
-      res.end(csv, "UTF-8");
+      res.end(csv, 'UTF-8');
     } catch (e) {
       return res.serverError(e);
     }
@@ -173,7 +202,7 @@ module.exports = {
       );
       return res.ok({
         content: updatedLead,
-        message: "Lead updated"
+        message: 'Lead updated'
       });
     } catch (e) {
       return res.serverError(e);
@@ -186,7 +215,7 @@ module.exports = {
       });
       return res.ok({
         content: deletedLead,
-        message: "Lead deleted"
+        message: 'Lead deleted'
       });
     } catch (e) {
       return res.serverError(e);
@@ -194,26 +223,26 @@ module.exports = {
   },
   previewFile: async (req, res) => {
     try {
-      req.file("file").upload(
+      req.file('file').upload(
         {
           maxBytes: 10000000
         },
         async (err, files) => {
-          if (err) return res.serverError(err);
+          if (err) {return res.serverError(err);}
           if (files.length === 0)
-            return res.serverError({ message: "No files uploaded" });
+          {return res.serverError({ message: 'No files uploaded' });}
 
           let inputFile;
           let parsedOutput;
           let result;
 
-          if (files[0].fd.endsWith(".csv")) {
-            inputFile = fs.readFileSync(files[0].fd, { encoding: "utf8" });
+          if (files[0].fd.endsWith('.csv')) {
+            inputFile = fs.readFileSync(files[0].fd, { encoding: 'utf8' });
             parsedOutput = Papa.parse(inputFile, { header: true });
             result = parsedOutput.data;
           } else if (
-            files[0].fd.endsWith(".xls") ||
-            files[0].fd.endsWith(".xlsx")
+            files[0].fd.endsWith('.xls') ||
+            files[0].fd.endsWith('.xlsx')
           ) {
             inputFile = fs.readFileSync(files[0].fd);
             parsedOutput = XLSX.parse(inputFile);
@@ -261,7 +290,7 @@ module.exports = {
 
           return res.ok({
             content: resultData,
-            message: "File parsed"
+            message: 'File parsed'
           });
         }
       );

@@ -6,6 +6,16 @@
       </button>
       <span>LeadSpeed</span>
       <span class="toolbar-spacer"></span>
+      <div *ngIf="router.url === '/leads'">
+        <!-- <mat-form-field appearance="outline" fxFlex>
+          <input matInput formControlName="searchLeads">
+        </mat-form-field> -->
+        <mat-form-field class="search-form">
+          <input matInput placeholder="Search Leads" type="text">
+        </mat-form-field>
+        <button button="submit" class="search-button" mat-raised-button color="primary" (click)="search_leads()">Search</button>
+        	<!-- <input type="text" class="form-control" placeholder="Search" autofocus> -->
+      </div>
       <div *ngIf="router.url !== '/dashboard'" [ngSwitch]="router.url">
         <button mat-raised-button color="primary" *ngSwitchCase="'/clients'" routerLink="/clients/create">Create Client</button>
         <button mat-raised-button color="primary" *ngSwitchCase="'/campaigns'" routerLink="/campaigns/create">Create
