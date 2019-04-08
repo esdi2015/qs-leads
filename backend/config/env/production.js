@@ -149,7 +149,8 @@ module.exports = {
     ***************************************************************************/
     cors: {
       allowOrigins: [
-        'https://qs.infusemedia.com',
+        'https://qstage.infusemedia.com',
+	'http://qstage.infusemedia.com',
       ]
     },
 
@@ -251,7 +252,8 @@ module.exports = {
     *                                                                          *
     ***************************************************************************/
     onlyAllowOrigins: [
-      'https://qs.infusemedia.com',
+      'https://qstage.infusemedia.com',
+      'http://qstage.infusemedia.com',
     ],
 
 
@@ -336,7 +338,7 @@ module.exports = {
   * this, just try deploying without setting it and see if it works.)       *
   *                                                                         *
   ***************************************************************************/
-  port: 1339,
+  port: 1350,
 
 
 
