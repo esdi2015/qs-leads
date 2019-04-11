@@ -72,8 +72,8 @@ module.exports = {
         .sort(`${sort} ${direction}`)
         .limit(10)
         .skip(page * 10);
-
       const leadsTotal = await Leads.count({ name :  { 'contains' : search } });
+      // const leadsTotal = await Leads.count();
       return res.ok({
         content: leads,
         metadata: {
