@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from "@angular/core";
+import { Component, OnInit, ViewChild, OnChanges } from "@angular/core";
 import { MatDialog, MatSnackBar } from "@angular/material";
 import { Router, ActivatedRoute } from "@angular/router";
 import * as _ from "lodash";
@@ -13,7 +13,7 @@ import { environment } from "src/environments/environment";
   templateUrl: "./leads.component.html",
   styleUrls: ["./leads.component.scss"]
 })
-export class LeadsComponent implements OnInit {
+export class LeadsComponent implements OnInit, OnChanges {
   @ViewChild("appTable")
   appTable: TableComponent;
 
@@ -28,25 +28,11 @@ export class LeadsComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
   ) {
-    this.route.params.subscribe(params => {
-      this.api = {
-        serviceName: "leadsService",
-        serviceCall: "list"
-        // serviceCall: "searchLeads"
-      };
-      if (params.search_text) {
-          this.searchText = params.search_text;
-          this.api.searchText = params.search_text;
-      } else {
-        this.searchText = "";
-      }
-    });
-
-    // this.api = {
-    //   serviceName: "leadsService",
-    //   serviceCall: "list"
-    //   // serviceCall: "searchLeads"
-    // };
+    this.api = {
+      serviceName: "leadsService",
+      serviceCall: "list"
+      // serviceCall: "searchLeads"
+    };
     this.columns = [
       {
         key: "name",
@@ -112,7 +98,18 @@ export class LeadsComponent implements OnInit {
     ];
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.route.params.subscribe(params => {
+      if (params.search_text) {
+          this.api.searchText = params.search_text;
+          this.appTable.refresh();
+      }
+    });
+  }
+
+  ngOnChanges(changes: import("@angular/core").SimpleChanges): void {
+    console.log("ngOnChange");
+  }
 
   truncate(str, length, ending?) {
     if (length == null) {

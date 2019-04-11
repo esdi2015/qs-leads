@@ -69,7 +69,7 @@ export class CampaignsComponent implements OnInit {
       {
         key: "status",
         header: "Status",
-        sort: false,
+        sort: true,
         cell: (row: any) => `${row.status}`
       },
       {
