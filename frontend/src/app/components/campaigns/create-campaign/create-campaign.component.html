@@ -1,0 +1,96 @@
+<mat-toolbar class="mat-elevation-z1" color="secondary">
+  <mat-toolbar-row>
+    <span>New Campaign</span>
+    <div fxFlex></div>
+    <button mat-button color="primary" routerLink="/campaigns">
+      <mat-icon>arrow_left</mat-icon>
+      <span>Return to Campaigns list</span>
+    </button>
+  </mat-toolbar-row>
+</mat-toolbar>
+<div class="example-loading-shade" *ngIf="loading || working">
+  <mat-spinner></mat-spinner>
+</div>
+<mat-card *ngIf="!loading">
+  <form [formGroup]="form" (submit)="submit()" fxLayout="column" fxLayoutGap="10px">
+    <div class="form-container">
+      <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="center space-around">
+        <mat-form-field appearance="outline" fxFlex>
+          <mat-label>Campaign name</mat-label>
+          <input matInput formControlName="name">
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline" fxFlex>
+          <mat-label>URL</mat-label>
+          <input matInput formControlName="url">
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+      </div>
+      <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="center space-around">
+        <mat-form-field appearance="outline" fxFlex>
+          <mat-label>Request Delay</mat-label>
+          <input type="number" matInput formControlName="delay" min="1" max="10000">
+          <span matSuffix>seconds</span>
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline" fxFlex>
+          <mat-label>Client</mat-label>
+          <mat-select formControlName="client">
+            <mat-option *ngFor="let client of clients" [value]="client.id">
+              {{ client.name }}
+            </mat-option>
+          </mat-select>
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline" fxFlex>
+            <mat-label>Status</mat-label>
+            <mat-select formControlName="status">
+              <mat-option *ngFor="let status of ['live', 'stopped']" [value]="status">
+                {{ status }}
+              </mat-option>
+            </mat-select>
+            <mat-error>This field is required</mat-error>
+          </mat-form-field>
+      </div>
+    </div>
+
+    <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign=" center">
+      <h3>Structure</h3>
+      <div fxFlex></div>
+      <button mat-stroked-button color="primary" type="button" (click)="importFile.click()">Import from CSV/XLSX</button>
+      <button mat-stroked-button color="primary" type="button" (click)="addFieldsRow()">Add Row</button>
+      <input type="file" (change)="onImportFileChanged($event)" style="display: none;" #importFile>
+    </div>
+    <div class="form-container">
+      <div *ngIf="!form.get('structure').controls.length">No Fields added yet</div>
+      <ng-container formArrayName="structure" *ngFor="let item of form.get('structure').controls; let i = index;">
+        <div [formGroupName]="i" fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="space-between center" [@listInOut]>
+          <h3 class="exact-padding">{{ i+1 }}</h3>
+          <mat-form-field appearance="outline" fxFlex>
+            <mat-label>CSV</mat-label>
+            <input matInput formControlName="field_csv">
+            <mat-error>This field is required</mat-error>
+          </mat-form-field>
+          <mat-form-field appearance="outline" fxFlex>
+            <mat-label>API</mat-label>
+            <input matInput placeholder="API Field Name" formControlName="field_api">
+            <mat-error>This field is required</mat-error>
+          </mat-form-field>
+          <mat-form-field appearance="outline" fxFlex>
+            <mat-label>Value</mat-label>
+            <input matInput formControlName="field_api_value">
+            <mat-error>This field is required</mat-error>
+          </mat-form-field>
+          <button mat-icon-button (click)="removeFieldsRow(i)" type="button" class="exact-padding">
+            <mat-icon>close</mat-icon>
+          </button>
+        </div>
+      </ng-container>
+    </div>
+
+    <div fxLayout="row">
+      <div fxFlex></div>
+      <button mat-stroked-button type="submit">Save</button>
+    </div>
+  </form>
+</mat-card>

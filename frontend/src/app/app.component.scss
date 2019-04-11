@@ -1,0 +1,51 @@
+.mat-toolbar {
+  background: #ffffff;
+  color: #000000;
+  border-bottom: solid 1px rgba(0, 0, 0, 0.12);
+  position: relative;
+  z-index: 2;
+}
+.mat-sidenav {
+  min-width: 200px;
+}
+.mat-list-item {
+  border-radius: 0px 40px 40px 0px;
+  width: calc(100% - 4px) !important;
+  height: 48px !important;
+  font-size: 14px;
+  margin: 2px 0px;
+  transition: background 0.1s ease-in-out;
+  &:hover {
+    background: rgba(0, 0, 0, 0.04);
+  }
+  &:focus,
+  &:active,
+  &.active {
+    background: rgba(0, 0, 0, 0.08);
+  }
+  .mat-list-icon {
+    width: 20px;
+    height: 20px;
+    font-size: 20px;
+  }
+}
+.content-container {
+  position: absolute;
+  top: 64px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+.toolbar-spacer {
+  flex: 1 1 auto;
+}
+.search-form {
+	width: 500px;
+  margin-top: 8px;
+  margin-right: 7px;
+	font-size: 16px;
+}
+.search-button {
+  margin-right: 30px;
+}
+

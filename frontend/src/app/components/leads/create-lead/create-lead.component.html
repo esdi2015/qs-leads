@@ -1,0 +1,69 @@
+<mat-toolbar class="mat-elevation-z1" color="secondary">
+  <mat-toolbar-row>
+    <span>New Lead</span>
+    <div fxFlex></div>
+    <button mat-button color="primary" routerLink="/leads">
+      <mat-icon>arrow_left</mat-icon>
+      <span>Return to Leads list</span>
+    </button>
+  </mat-toolbar-row>
+</mat-toolbar>
+<div class="example-loading-shade" *ngIf="loading || working">
+  <mat-spinner></mat-spinner>
+</div>
+<mat-card *ngIf="!loading">
+  <form [formGroup]="form" (submit)="submit()" fxLayout="column" fxLayoutGap="10px">
+    <div class="form-container">
+      <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="center space-around">
+        <mat-form-field appearance="outline" fxFlex>
+          <mat-label>Lead job name</mat-label>
+          <input matInput formControlName="name">
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+      </div>
+      <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="center space-around">
+        <mat-form-field appearance="outline" fxFlex>
+          <mat-label>Client</mat-label>
+          <mat-select formControlName="client">
+            <mat-option *ngFor="let client of clients" [value]="client.id">
+              {{ client.name }}
+            </mat-option>
+          </mat-select>
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline" fxFlex>
+          <mat-label>Campaign</mat-label>
+          <mat-select formControlName="campaign">
+            <mat-option *ngFor="let campaign of campaigns" [value]="campaign.id" >
+              {{ campaign.name }}
+            </mat-option>
+          </mat-select>
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign=" center">
+      <h3>Preview</h3>
+      <div fxFlex></div>
+      <button mat-stroked-button color="primary" type="button" (click)="importFile.click()">Load CSV/XLSX</button>
+      <input type="file" (change)="onImportFileChanged($event)" style="display: none;" #importFile>
+    </div>
+    <div class="preview-container">
+      <div *ngIf="!preview.rows">No uploaded CSV/XLSX file yet</div>
+      <div *ngIf="preview.rows">
+        <table>
+          <th *ngFor="let header of preview.headers">{{ header }}</th>
+          <tr *ngFor="let row of preview.rows">
+            <td *ngFor="let column of preview.headers">{{ row[column] }}</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <div fxLayout="row">
+      <div fxFlex></div>
+      <button mat-stroked-button type="submit">Save & Run</button>
+    </div>
+  </form>
+</mat-card>

@@ -1,0 +1,107 @@
+<ng-container *ngIf="auth.exists()">
+  <mat-toolbar color="primary">
+    <mat-toolbar-row>
+      <button mat-icon-button (click)="toggleSideNav()">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <span>LeadSpeed</span>
+      <span class="toolbar-spacer"></span>
+      <div *ngIf="router.url.includes('/leads/search') || router.url === '/leads'">
+        <!-- <mat-form-field appearance="outline" fxFlex>
+          <input matInput formControlName="searchLeads">
+        </mat-form-field> -->
+        <ng-container>
+          <form fxLayout="row" fxLayoutAlign="center center" fxFill [formGroup]="form_search" (submit)="search_leads()">
+            <mat-form-field class="search-form">
+              <input matInput placeholder="Search Leads" formControlName="search_leads" type="text">
+            </mat-form-field>
+            <button button="submit" class="search-button" mat-raised-button color="primary" type="submit">Search</button>
+              <!-- <input type="text" class="form-control" placeholder="Search" autofocus> -->
+          </form>
+        </ng-container>
+      </div>
+      <div *ngIf="router.url !== '/dashboard'" [ngSwitch]="router.url">
+        <button mat-raised-button color="primary" *ngSwitchCase="'/clients'" routerLink="/clients/create">Create Client</button>
+        <button mat-raised-button color="primary" *ngSwitchCase="'/campaigns'" routerLink="/campaigns/create">Create
+          Campaign</button>
+        <button mat-raised-button color="primary" *ngSwitchCase="'/leads'" routerLink="/leads/create">Create Job</button>
+        <button mat-raised-button color="primary" *ngSwitchCase="'/users'" routerLink="/users/create">Create User</button>
+      </div>
+      <div *ngIf="router.url.includes('/leads/search')">
+        <button mat-raised-button color="primary" routerLink="/leads/create">Create Job</button>
+      </div>
+      <button mat-icon-button [matMenuTriggerFor]="menu">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item>
+          <mat-icon>account_circle</mat-icon>
+          <span>{{ auth.current.firstName }} {{ auth.current.lastName }}</span>
+        </button>
+        <mat-divider></mat-divider>
+        <button mat-menu-item (click)="logout()">
+          <mat-icon>exit_to_app</mat-icon>
+          <span>Logout</span>
+        </button>
+      </mat-menu>
+    </mat-toolbar-row>
+  </mat-toolbar>
+  <mat-sidenav-container class="content-container">
+    <mat-sidenav #sidenav mode="side" [opened]="sidenavOpened">
+      <mat-nav-list>
+        <mat-list-item disableRipple routerLink="/dashboard" routerLinkActive="active">
+          <mat-icon matListIcon>dashboard</mat-icon>
+          <span>Dashboard</span>
+        </mat-list-item>
+        <mat-list-item disableRipple routerLink="/clients" routerLinkActive="active">
+          <mat-icon matListIcon>people</mat-icon>
+          <span>Clients</span>
+        </mat-list-item>
+        <mat-list-item disableRipple routerLink="/campaigns" routerLinkActive="active">
+          <mat-icon matListIcon>list</mat-icon>
+          <span>Campaigns</span>
+        </mat-list-item>
+        <mat-list-item disableRipple routerLink="/leads" routerLinkActive="active">
+          <mat-icon matListIcon>send</mat-icon>
+          <span>Leads</span>
+        </mat-list-item>
+        <!-- <mat-list-item disableRipple routerLink="/history" routerLinkActive="active">
+        <mat-icon matListIcon>history</mat-icon>
+        <span>History & Status</span>
+      </mat-list-item> -->
+        <mat-divider></mat-divider>
+        <mat-list-item disableRipple routerLink="/users" routerLinkActive="active">
+          <mat-icon matListIcon>people</mat-icon>
+          <span>Users</span>
+        </mat-list-item>
+      </mat-nav-list>
+    </mat-sidenav>
+
+    <mat-sidenav-content>
+      <router-outlet></router-outlet>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</ng-container>
+<ng-container *ngIf="!auth.exists()">
+  <form fxLayout="column" fxLayoutAlign="center center" fxFill [formGroup]="form" (submit)="submit()">
+    <mat-card style="max-width: 300px;">
+      <h3>LeadSpeed - Authorization</h3>
+      <div fxLayout="column" fxLayoutGap="10px" fxLayoutAlign="center space-around">
+        <mat-form-field appearance="outline" fxFlex>
+          <mat-label>Email</mat-label>
+          <input matInput formControlName="email">
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline" fxFlex>
+          <mat-label>Password</mat-label>
+          <input matInput formControlName="password" type="password">
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+      </div>
+      <div fxLayout="row">
+        <div fxFlex></div>
+        <button mat-stroked-button type="submit">Login</button>
+      </div>
+    </mat-card>
+  </form>
+</ng-container>

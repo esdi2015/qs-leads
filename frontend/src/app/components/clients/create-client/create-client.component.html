@@ -1,0 +1,27 @@
+<mat-toolbar class="mat-elevation-z1" color="secondary">
+  <mat-toolbar-row>
+    <span>{{ isEdit ? 'Edit Client' : 'New Client' }}</span>
+    <div fxFlex></div>
+    <button mat-button color="primary" routerLink="/clients">
+      <mat-icon>arrow_left</mat-icon>
+      <span>Return to Clients list</span>
+    </button>
+  </mat-toolbar-row>
+</mat-toolbar>
+<div class="example-loading-shade" *ngIf="loading || working">
+  <mat-spinner></mat-spinner>
+</div>
+<mat-card *ngIf="!loading">
+  <form [formGroup]="form" (submit)="submit()">
+    <div class="form-container">
+      <mat-form-field appearance="outline">
+        <input matInput placeholder="Client name" formControlName="name">
+        <mat-error>This field is required</mat-error>
+      </mat-form-field>
+    </div>
+    <div fxLayout="row">
+      <div fxFlex></div>
+      <button mat-stroked-button type="submit">Save</button>
+    </div>
+  </form>
+</mat-card>
