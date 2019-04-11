@@ -55,7 +55,7 @@ export class AppComponent implements OnInit {
   search_leads(): void {
     if (this.form_search.valid) {
       const text = this.form_search.value.search_leads;
-      this.router.navigateByUrl("/leads/search/" + text);
+      this.router.navigate( ["/leads/search/" + text] );
     }
   }
 }

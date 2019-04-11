@@ -77,6 +77,7 @@ class Pool {
         { _id: lead._id, "progress.id": jobNumber },
         {
           $set: {
+            "progress.$.email": lead.data[jobNumber].value['EM'],
             "progress.$.status":
               error || response.statusCode !== 200 ? "Error" : "Success",
             "progress.$.response": body
