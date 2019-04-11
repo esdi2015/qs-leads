@@ -10,25 +10,43 @@ const fs = require('fs');
 
 module.exports = {
   list: async (req, res) => {
-    console.log('list');
+    // console.log('list');
     try {
       const sort = req.query.sort || 'createdAt';
       const direction = (req.query.direction || 'DESC').toUpperCase();
       const page = req.query.page || 0;
+      const search = req.query.search || '';
 
-      const leads = await Leads.find()
+      if (search === '') {
+        const leads = await Leads.find()
         .populate('client')
         .populate('campaign')
         .sort(`${sort} ${direction}`)
         .limit(10)
         .skip(page * 10);
-      const leadsTotal = await Leads.count();
-      return res.ok({
-        content: leads,
-        metadata: {
-          total: leadsTotal
-        }
-      });
+        const leadsTotal = await Leads.count();
+        return res.ok({
+          content: leads,
+          metadata: {
+            total: leadsTotal
+          }
+        });
+      } else {
+        const leads = await Leads.find(
+          { name :  { 'contains' : search } }
+        ).populate('client')
+         .populate('campaign')
+          .sort(`${sort} ${direction}`)
+          .limit(10)
+          .skip(page * 10);
+        const leadsTotal = await Leads.count({ name :  { 'contains' : search } });
+        return res.ok({
+          content: leads,
+          metadata: {
+            total: leadsTotal
+          }
+        });
+      }
     } catch (e) {
       return res.serverError(e);
     }
@@ -46,7 +64,7 @@ module.exports = {
       const sort = req.query.sort || 'createdAt';
       const direction = (req.query.direction || 'DESC').toUpperCase();
       const page = req.query.page || 0;
-      const search = req.query.search || null;
+      const search = req.query.search || '';
       const leads = await Leads.find(
         { name :  { 'contains' : search } }
       ).populate('client')
@@ -54,8 +72,8 @@ module.exports = {
         .sort(`${sort} ${direction}`)
         .limit(10)
         .skip(page * 10);
-
-      const leadsTotal = await Leads.count();
+      const leadsTotal = await Leads.count({ name :  { 'contains' : search } });
+      // const leadsTotal = await Leads.count();
       return res.ok({
         content: leads,
         metadata: {

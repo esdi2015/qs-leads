@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { FormBuilder, Validators, FormGroup } from "@angular/forms";
-import { Router } from "@angular/router";
+import { Router, ActivatedRoute } from "@angular/router";
 import { AuthService } from "./services/auth.service";
 
 @Component({
@@ -11,17 +11,24 @@ import { AuthService } from "./services/auth.service";
 export class AppComponent implements OnInit {
   public form: FormGroup;
   public sidenavOpened = true;
+  public form_search: FormGroup;
+  // public showSearchForm = false;
 
   constructor(
     public router: Router,
+    // private route: ActivatedRoute,
     public auth: AuthService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private fbls: FormBuilder
   ) {}
 
   ngOnInit() {
     this.form = this.fb.group({
       email: ["", [Validators.required, Validators.email]],
       password: ["", Validators.required]
+    });
+    this.form_search = this.fbls.group({
+      search_leads: ["", [Validators.minLength(2)]]
     });
   }
 
@@ -45,8 +52,10 @@ export class AppComponent implements OnInit {
     });
   }
 
-  search_leads() {
-    // alert("search_leads");
-    this.router.navigateByUrl("/leads");
+  search_leads(): void {
+    if (this.form_search.valid) {
+      const text = this.form_search.value.search_leads;
+      this.router.navigateByUrl("/leads/search/" + text);
+    }
   }
 }

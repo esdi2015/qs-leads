@@ -8,17 +8,29 @@ import { environment } from "../../environments/environment.prod";
 export class LeadsService {
   constructor(private http: HttpClient) {}
 
-  public list(sort: string, direction: string, page: number) {
-    return this.http.get(
-      `${environment.api}leads?sort=${sort}&direction=${direction}&page=${page}`
-    );
+  public list(sort: string, direction: string, page: number, search_text: string = "") {
+    if (search_text === "") {
+      return this.http.get(
+        `${environment.api}leads?sort=${sort}&direction=${direction}&page=${page}`
+      );
+    } else {
+      return this.http.get(
+        `${environment.api}leads?sort=${sort}&direction=${direction}&page=${page}&search=${search_text}`
+      );
+    }
+    // return this.http.get(
+    //   `${environment.api}leads?sort=${sort}&direction=${direction}&page=${page}`
+    // );
   }
 
   public searchLeads(sort: string, direction: string, page: number, search_text: string) {
-    console.log("searchLeads");
-    if (!search_text) {
-      search_text = "234026";
-    }
+    // if (!search_text) {
+    //   return false;
+    // } else {
+    //   return this.http.get(
+    //     `${environment.api}leads?sort=${sort}&direction=${direction}&page=${page}&search=${search_text}`
+    //   );
+    // }
     return this.http.get(
       `${environment.api}leads?sort=${sort}&direction=${direction}&page=${page}&search=${search_text}`
     );

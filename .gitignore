@@ -42,3 +42,4 @@ Thumbs.db
 backend/api/services/SocketService.js
 frontend/src/environments/environment.prod.ts
 worker/index.js
+backend/.eslintrc

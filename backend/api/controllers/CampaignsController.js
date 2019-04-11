@@ -42,6 +42,18 @@ module.exports = {
       return res.serverError(e);
     }
   },
+  listAllActive: async (req, res) => {
+    try {
+      console.log(req.params);
+      const campaigns = await Campaigns.find({
+        client: req.params.cid,
+        status: 'live'
+      }).sort(`name DESC`);
+      return res.ok(campaigns);
+    } catch (e) {
+      return res.serverError(e);
+    }
+  },
   single: async (req, res) => {
     try {
       const campaign = await Campaigns.findOne({ id: req.params.id });
@@ -106,7 +118,7 @@ module.exports = {
         (err, files) => {
           if (err) {return res.serverError(err);}
           if (files.length === 0)
-            {return res.serverError({ message: "No files uploaded" });}
+          {return res.serverError({ message: 'No files uploaded' });}
 
           let inputFile;
           let parsedOutput;

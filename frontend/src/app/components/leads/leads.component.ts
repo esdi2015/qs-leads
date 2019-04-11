@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
 import { MatDialog, MatSnackBar } from "@angular/material";
-import { Router } from "@angular/router";
+import { Router, ActivatedRoute } from "@angular/router";
 import * as _ from "lodash";
 import * as moment from "moment";
 import { LeadsService } from "src/app/services/leads.service";
@@ -19,18 +19,34 @@ export class LeadsComponent implements OnInit {
 
   public api: any;
   public columns: any[];
+  public searchText: string;
 
   constructor(
     private dialog: MatDialog,
     private leadsService: LeadsService,
     private snackBar: MatSnackBar,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute,
   ) {
-    this.api = {
-      serviceName: "leadsService",
-      // serviceCall: "list"
-      serviceCall: "searchLeads"
-    };
+    this.route.params.subscribe(params => {
+      this.api = {
+        serviceName: "leadsService",
+        serviceCall: "list"
+        // serviceCall: "searchLeads"
+      };
+      if (params.search_text) {
+          this.searchText = params.search_text;
+          this.api.searchText = params.search_text;
+      } else {
+        this.searchText = "";
+      }
+    });
+
+    // this.api = {
+    //   serviceName: "leadsService",
+    //   serviceCall: "list"
+    //   // serviceCall: "searchLeads"
+    // };
     this.columns = [
       {
         key: "name",
@@ -79,9 +95,9 @@ export class LeadsComponent implements OnInit {
       {
         key: "actions",
         actions: {
-          // result: (row: any) => {
-          //   this.router.navigateByUrl(`/leads/results/${row.id}`);
-          // },
+          result: (row: any) => {
+            this.router.navigateByUrl(`/leads/results/${row.id}`);
+          },
           download: (row: any) => {
             window.location.href = `${environment.api}leads/download/${
               row.id

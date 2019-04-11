@@ -22,14 +22,15 @@ module.exports.routes = {
   // Campaigns
   'get /api/campaigns': 'CampaignsController.list',
   'get /api/campaigns/all/:cid': 'CampaignsController.listAll',
+  'get /api/campaigns/all/active/:cid': 'CampaignsController.listAllActive',
   'get /api/campaigns/:id': 'CampaignsController.single',
   'post /api/campaigns': 'CampaignsController.create',
   'delete /api/campaigns/:id': 'CampaignsController.delete',
   'put /api/campaigns/:id': 'CampaignsController.update',
   'post /api/campaigns/import': 'CampaignsController.importFieldsFromFile',
   // Leads
-  // "get /api/leads": "LeadsController.list",
-  'get /api/leads': 'LeadsController.searchLeads',
+  'get /api/leads': 'LeadsController.list',
+  // 'get /api/leads': 'LeadsController.searchLeads',
   'get /api/leads/all/:cid': 'LeadsController.listAll',
   'get /api/leads/:id': 'LeadsController.single',
   'post /api/leads': 'LeadsController.create',

@@ -19,7 +19,7 @@ export class TableComponent implements OnInit {
   @Input()
   displayedColumns: string[];
   @Input()
-  api: { serviceName: string; serviceCall: string };
+  api: { serviceName: string; serviceCall: string; searchText: string };
 
   data: any[] = [];
 
@@ -51,11 +51,21 @@ export class TableComponent implements OnInit {
         startWith({}),
         switchMap(() => {
           this.isLoadingResults = true;
-          return this[this.api.serviceName]![this.api.serviceCall](
-            this.sort.active || "createdAt",
-            this.sort.direction,
-            this.paginator.pageIndex
-          );
+          if (this.api.searchText) {
+            return this[this.api.serviceName]![this.api.serviceCall](
+              this.sort.active || "createdAt",
+              this.sort.direction,
+              this.paginator.pageIndex,
+              this.api.searchText
+            );
+          } else {
+            return this[this.api.serviceName]![this.api.serviceCall](
+              this.sort.active || "createdAt",
+              this.sort.direction,
+              this.paginator.pageIndex
+            );
+          }
+
         }),
         map((data: any) => {
           this.isLoadingResults = false;

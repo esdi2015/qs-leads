@@ -9,10 +9,7 @@ export class CampaignsService {
   constructor(private http: HttpClient) {}
 
   public list(sort: string, direction: string, page: number): any {
-    return this.http.get(
-      `${
-        environment.api
-      }campaigns?sort=${sort}&direction=${direction}&page=${page}`
+    return this.http.get(`${environment.api}campaigns?sort=${sort}&direction=${direction}&page=${page}`
     );
   }
 
@@ -38,5 +35,9 @@ export class CampaignsService {
 
   public listAll(cid: string) {
     return this.http.get(`${environment.api}campaigns/all/${cid}`);
+  }
+
+  public listAllActive(cid: string) {
+    return this.http.get(`${environment.api}campaigns/all/active/${cid}`);
   }
 }

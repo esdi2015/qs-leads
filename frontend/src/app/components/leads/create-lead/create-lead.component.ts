@@ -74,7 +74,7 @@ export class CreateLeadComponent implements OnInit {
     this.form.get("client").valueChanges.subscribe(value => {
       this.working = true;
       this.form.controls["campaign"].reset();
-      this.campaignsService.listAll(value).subscribe((data: any) => {
+      this.campaignsService.listAllActive(value).subscribe((data: any) => {
         this.campaigns = data;
         if (this.campaigns && this.campaigns.length > 0) {
           this.form.controls["campaign"].enable();
