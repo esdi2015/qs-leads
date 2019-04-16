@@ -35,7 +35,8 @@ export class TableComponent implements OnInit {
     private clientsService: ClientsService,
     private campaignsService: CampaignsService,
     private leadsService: LeadsService,
-    private usersService: UsersService
+    private usersService: UsersService,
+    private historyService: LeadsService,
   ) {}
 
   ngOnInit() {
