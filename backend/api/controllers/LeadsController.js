@@ -157,7 +157,7 @@ module.exports = {
             }
             index++;
           }
-
+          console.log(req.body.user);
           const newLead = await Leads.create({
             name: req.body.name,
             filename: files[0].filename,
@@ -166,7 +166,8 @@ module.exports = {
             client: req.body.client,
             campaign: req.body.campaign,
             data: resultData,
-            progress: resultProgress
+            progress: resultProgress,
+            user: req.body.user
           }).fetch();
 
           SocketService.emit('process_job', { id: newLead.id });

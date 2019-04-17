@@ -36,6 +36,9 @@ module.exports = {
     progress: {
       type: 'json',
       required: false
+    },
+    user: {
+      model: 'users'
     }
   }
 };

@@ -34,6 +34,12 @@ export class HistoryComponent implements OnInit {
     };
     this.columns = [
       {
+        key: "user",
+        header: "User",
+        sort: true,
+        cell: (row: any) => `<b>User</b>`
+      },
+      {
         key: "name",
         header: "Name",
         sort: true,
@@ -41,8 +47,13 @@ export class HistoryComponent implements OnInit {
       },
       {
         key: "client",
-        header: "Client/Campaign",
-        cell: (row: any) => `${row.client.name}/${row.campaign.name}`
+        header: "Client",
+        cell: (row: any) => `${row.client.name}`
+      },
+      {
+        key: "campaign",
+        header: "Campaign",
+        cell: (row: any) => `${row.campaign.name}`
       },
       {
         key: "filename",

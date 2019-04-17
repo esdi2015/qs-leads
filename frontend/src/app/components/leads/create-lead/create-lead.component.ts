@@ -12,6 +12,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { LeadsService } from "src/app/services/leads.service";
 import { CampaignsService } from "../../../services/campaigns.service";
 import { ClientsService } from "../../../services/clients.service";
+import { AuthService } from "src/app/services/auth.service";
 
 @Component({
   selector: "app-create-lead",
@@ -59,11 +60,13 @@ export class CreateLeadComponent implements OnInit {
     private campaignsService: CampaignsService,
     private leadsService: LeadsService,
     private snackBar: MatSnackBar,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private authService: AuthService
   ) {}
 
   ngOnInit() {
     this.clientsService.listAll().subscribe((data: any) => {
+      // console.log(data);
       this.clients = data;
     });
     this.form = this.fb.group({
@@ -115,6 +118,7 @@ export class CreateLeadComponent implements OnInit {
   }
 
   submit() {
+    console.log(this.authService.current);
     if (this.form.valid) {
       this.working = true;
       const formData = new FormData();
@@ -122,6 +126,7 @@ export class CreateLeadComponent implements OnInit {
       formData.append("client", this.form.value.client);
       formData.append("campaign", this.form.value.campaign);
       formData.append("file", this.importFile, this.importFile.name);
+      formData.append("user", this.authService.current);
 
       this.leadsService.create(formData).subscribe((data: any) => {
         this.snackBar.open(data.message, "Dismiss", { duration: 2000 });
