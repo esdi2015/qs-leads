@@ -48,12 +48,12 @@ export class HistoryComponent implements OnInit {
       {
         key: "client",
         header: "Client",
-        cell: (row: any) => `${row.client.name}`
+        cell: (row: any) => { if (row.client != null) { return `${row.client.name}` } else return "None" }
       },
       {
         key: "campaign",
         header: "Campaign",
-        cell: (row: any) => `${row.campaign.name}`
+        cell: (row: any) => { if (row.campaign != null) { return `${row.campaign.name}` } else return "None" }
       },
       {
         key: "filename",
