@@ -42,8 +42,13 @@ export class LeadsComponent implements OnInit, OnChanges {
       },
       {
         key: "client",
-        header: "Client/Campaign",
-        cell: (row: any) => `${row.client.name}/${row.campaign.name}`
+        header: "Client",
+        cell: (row: any) => `${row.client.name}`
+      },
+      {
+        key: "campaign",
+        header: "Campaign",
+        cell: (row: any) => `${row.campaign.name}`
       },
       {
         key: "filename",

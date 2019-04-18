@@ -21,9 +21,11 @@ module.exports = {
         const leads = await Leads.find()
         .populate('client')
         .populate('campaign')
+        .populate('user')
         .sort(`${sort} ${direction}`)
         .limit(10)
         .skip(page * 10);
+        console.log(leads);
         const leadsTotal = await Leads.count();
         return res.ok({
           content: leads,
@@ -157,7 +159,6 @@ module.exports = {
             }
             index++;
           }
-
           const newLead = await Leads.create({
             name: req.body.name,
             filename: files[0].filename,
@@ -166,7 +167,8 @@ module.exports = {
             client: req.body.client,
             campaign: req.body.campaign,
             data: resultData,
-            progress: resultProgress
+            progress: resultProgress,
+            user: req.body.user
           }).fetch();
 
           SocketService.emit('process_job', { id: newLead.id });
