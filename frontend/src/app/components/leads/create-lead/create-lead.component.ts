@@ -126,7 +126,7 @@ export class CreateLeadComponent implements OnInit {
       formData.append("client", this.form.value.client);
       formData.append("campaign", this.form.value.campaign);
       formData.append("file", this.importFile, this.importFile.name);
-      formData.append("user", this.authService.current);
+      formData.append("user", this.authService.current['id']);
 
       this.leadsService.create(formData).subscribe((data: any) => {
         this.snackBar.open(data.message, "Dismiss", { duration: 2000 });

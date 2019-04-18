@@ -37,14 +37,14 @@ export class HistoryComponent implements OnInit {
         key: "user",
         header: "User",
         sort: true,
-        cell: (row: any) => `<b>User</b>`
+        cell: (row: any) => { if (row.user) {return `${row.user.firstName} ${row.user.lastName}`} else return "None" }
       },
-      {
-        key: "name",
-        header: "Name",
-        sort: true,
-        cell: (row: any) => `<b>${row.name}</b>`
-      },
+      // {
+      //   key: "name",
+      //   header: "Name",
+      //   sort: true,
+      //   cell: (row: any) => `<b>${row.name}</b>`
+      // },
       {
         key: "client",
         header: "Client",
@@ -58,25 +58,25 @@ export class HistoryComponent implements OnInit {
       {
         key: "filename",
         header: "Filename",
-        cell: (row: any) => `${this.truncate(row.filename, 50)}`
+        cell: (row: any) => `${row.filename}`
       },
-      {
-        key: "status",
-        header: "Status",
-        cell: (row: any) => `${row.status}`,
-        progress: (row: any) => {
-          const parsed = row.status.replace("Processing ", "").split("/");
-          const current = parseInt(parsed[0], 10);
-          const total = parseInt(parsed[1], 10);
-          return (current / total) * 100;
-        },
-        conditions: {
-          progress: (row: any) => row.status.startsWith("Processing")
-        }
-      },
+      // {
+      //   key: "status",
+      //   header: "Status",
+      //   cell: (row: any) => `${row.status}`,
+      //   progress: (row: any) => {
+      //     const parsed = row.status.replace("Processing ", "").split("/");
+      //     const current = parseInt(parsed[0], 10);
+      //     const total = parseInt(parsed[1], 10);
+      //     return (current / total) * 100;
+      //   },
+      //   conditions: {
+      //     progress: (row: any) => row.status.startsWith("Processing")
+      //   }
+      // },
       {
         key: "createdAt",
-        header: "Created",
+        header: "Uploaded",
         sort: true,
         cell: (row: any) =>
           `${moment(row.createdAt).format("YYYY-MM-DD H:mm:ss")}`
