@@ -117,6 +117,12 @@ export class CreateLeadComponent implements OnInit {
     }
   }
 
+  cancelImportFile() {
+    this.working = true;
+    this.preview = { headers: [], rows: [] };
+    this.working = false;
+  }
+
   submit() {
     console.log(this.authService.current);
     if (this.form.valid) {
