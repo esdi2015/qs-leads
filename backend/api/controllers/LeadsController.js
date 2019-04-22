@@ -308,9 +308,12 @@ module.exports = {
             }
           }
 
+          const timestamp = new Date();
+
           return res.ok({
             content: resultData,
-            message: 'File parsed'
+            message: 'File parsed',
+            date: timestamp.getTime()
           });
         }
       );
