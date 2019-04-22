@@ -10,7 +10,6 @@ const fs = require('fs');
 
 module.exports = {
   list: async (req, res) => {
-    // console.log('list');
     try {
       const sort = req.query.sort || 'createdAt';
       const direction = (req.query.direction || 'DESC').toUpperCase();
@@ -21,11 +20,11 @@ module.exports = {
         const leads = await Leads.find()
         .populate('client')
         .populate('campaign')
-        .populate('user')
-        .sort(`${sort} ${direction}`)
-        .limit(10)
-        .skip(page * 10);
-        console.log(leads);
+          .populate('user')
+          .sort(`${sort} ${direction}`)
+          .limit(10)
+          .skip(page * 10);
+
         const leadsTotal = await Leads.count();
         return res.ok({
           content: leads,
@@ -36,11 +35,13 @@ module.exports = {
       } else {
         const leads = await Leads.find(
           { name :  { 'contains' : search } }
-        ).populate('client')
-         .populate('campaign')
+        )
+        .populate('client')
+        .populate('campaign')
           .sort(`${sort} ${direction}`)
           .limit(10)
           .skip(page * 10);
+          
         const leadsTotal = await Leads.count({ name :  { 'contains' : search } });
         return res.ok({
           content: leads,

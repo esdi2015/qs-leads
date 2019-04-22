@@ -18,19 +18,9 @@ export class LeadsService {
         `${environment.api}leads?sort=${sort}&direction=${direction}&page=${page}&search=${search_text}`
       );
     }
-    // return this.http.get(
-    //   `${environment.api}leads?sort=${sort}&direction=${direction}&page=${page}`
-    // );
   }
 
   public searchLeads(sort: string, direction: string, page: number, search_text: string) {
-    // if (!search_text) {
-    //   return false;
-    // } else {
-    //   return this.http.get(
-    //     `${environment.api}leads?sort=${sort}&direction=${direction}&page=${page}&search=${search_text}`
-    //   );
-    // }
     return this.http.get(
       `${environment.api}leads?sort=${sort}&direction=${direction}&page=${page}&search=${search_text}`
     );
