@@ -66,11 +66,10 @@ export class CreateLeadComponent implements OnInit {
 
   ngOnInit() {
     this.clientsService.listAll().subscribe((data: any) => {
-      // console.log(data);
       this.clients = data;
     });
     this.form = this.fb.group({
-      name: [""],
+      name: ["", Validators.required],
       client: ["", Validators.required],
       campaign: [{ value: "", disabled: true }, Validators.required]
     });
@@ -87,9 +86,22 @@ export class CreateLeadComponent implements OnInit {
     });
   }
 
-  onImportFileChanged(event) {
+  onImportFileChanged(event: any) {
     this.importFile = event.target.files[0];
     if (this.importFile) {
+      if (!this.importFile.name.endsWith(".csv")) {
+        this.snackBar.open("ERROR! You can only upload CSV files", "Dismiss", {
+          duration: 5000
+        });
+        return;
+      }
+      if (!this.form.value.campaign) {
+        this.snackBar.open("ERROR! You must select Campaign first", "Dismiss", {
+          duration: 5000
+        });
+        return;
+      }
+
       const formData = new FormData();
       formData.append("client", this.form.value.client);
       formData.append("campaign", this.form.value.campaign);
@@ -115,6 +127,12 @@ export class CreateLeadComponent implements OnInit {
         }
       );
     }
+  }
+
+  cancelImportFile() {
+    this.working = true;
+    this.preview = { headers: [], rows: [] };
+    this.working = false;
   }
 
   submit() {
