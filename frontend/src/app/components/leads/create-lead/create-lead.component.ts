@@ -87,6 +87,16 @@ export class CreateLeadComponent implements OnInit {
   }
 
   onImportFileChanged(event: any) {
+    console.log(this.importFile);
+    console.log(event.target.files);
+    if (event.cancelable === true) {
+      console.log(event.cancelable);
+      this.working = true;
+      this.preview = { headers: [], rows: [] };
+      this.working = false;
+      return;
+    }
+
     this.importFile = event.target.files[0];
     if (this.importFile) {
       if (!this.importFile.name.endsWith(".csv")) {
