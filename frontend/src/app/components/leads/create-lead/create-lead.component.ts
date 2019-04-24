@@ -93,6 +93,7 @@ export class CreateLeadComponent implements OnInit {
       console.log(event.cancelable);
       this.working = true;
       this.preview = { headers: [], rows: [] };
+      // this.importFile = undefined;
       this.working = false;
       return;
     }
@@ -116,13 +117,10 @@ export class CreateLeadComponent implements OnInit {
       formData.append("client", this.form.value.client);
       formData.append("campaign", this.form.value.campaign);
       formData.append("file", this.importFile, this.importFile.name);
+      console.log(formData);
       this.working = true;
       this.leadsService.preview(formData).subscribe(
         (data: any) => {
-          // if (data == null) {
-          //   console.log("null data");
-          //   this.preview = { headers: [], rows: [] };
-          // } else {
             console.log(data);
             if (data.content && data.content.length > 0) {
               this.preview.headers = Object.keys(data.content[0]);
@@ -132,8 +130,6 @@ export class CreateLeadComponent implements OnInit {
                 duration: 2000
               });
             }
-          // }
-          //formData.delete("file");
           this.working = false;
         },
         error => {

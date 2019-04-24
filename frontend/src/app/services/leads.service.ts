@@ -55,7 +55,11 @@ export class LeadsService {
   //   }
   // }
 
-  public preview(data) {
+  public preview(data: any) {
+    let result: any;
+    if (data == null) {
+      result = "";
+    }
     // console.log(this.http.head(`${environment.api}leads/preview`));
     const headers = {headers: new HttpHeaders({
       // "Cache-Control":  "no-cache, no-store, must-revalidate, post-check=0, pre-check=0",
@@ -68,7 +72,7 @@ export class LeadsService {
     // , {headers}
     const timestamp = new Date();
     console.log(timestamp.getTime());
-    const result = this.http.post(`${environment.api}leads/preview`, data); // , headers
+    result = this.http.post(`${environment.api}leads/preview`, data); // , headers
     console.log(result);
     // const httpOptions = { headers: { ["Cache-Control"]: "no-cache, no-store, must-revalidate, post-check=0, pre-check=0"} }
     return result; //, headers
