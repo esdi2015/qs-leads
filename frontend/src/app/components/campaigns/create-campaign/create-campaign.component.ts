@@ -71,7 +71,7 @@ export class CreateCampaignComponent implements OnInit {
         if (routeUrl.indexOf("clone") !== -1) {
           this.isClone = true;
         }
-        console.log(params);
+        // console.log(params);
         if (params.id) {
           this.loading = true;
           this.isEdit = true;
@@ -171,16 +171,19 @@ export class CreateCampaignComponent implements OnInit {
               if (result === "yes") {
                 this.form.removeControl("structure");
                 this.form.addControl("structure", this.fb.array([]));
-              }
-              const fields = data.content;
-              for (let field in fields) {
-                (this.form.get("structure") as FormArray).push(
-                  this.fb.group({
-                    field_csv: [field, Validators.required],
-                    field_api: [field, Validators.required],
-                    field_api_value: [fields[field]]
-                  })
-                );
+
+                const fields = data.content;
+                for (let field in fields) {
+                  (this.form.get("structure") as FormArray).push(
+                    this.fb.group({
+                      field_csv: [field, Validators.required],
+                      field_api: [field, Validators.required],
+                      field_api_value: [fields[field]]
+                    })
+                  );
+                }
+              } else {
+                // this.form.removeControl("structure");
               }
             });
           } else {

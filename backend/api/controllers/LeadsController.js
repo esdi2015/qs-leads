@@ -41,7 +41,7 @@ module.exports = {
           .sort(`${sort} ${direction}`)
           .limit(10)
           .skip(page * 10);
-          
+
         const leadsTotal = await Leads.count({ name :  { 'contains' : search } });
         return res.ok({
           content: leads,
@@ -309,9 +309,12 @@ module.exports = {
             }
           }
 
+          const timestamp = new Date();
+
           return res.ok({
             content: resultData,
-            message: 'File parsed'
+            message: 'File parsed',
+            date: timestamp.getTime()
           });
         }
       );

@@ -87,6 +87,17 @@ export class CreateLeadComponent implements OnInit {
   }
 
   onImportFileChanged(event: any) {
+    console.log(this.importFile);
+    console.log(event.target.files);
+    if (event.cancelable === true) {
+      console.log(event.cancelable);
+      this.working = true;
+      this.preview = { headers: [], rows: [] };
+      // this.importFile = undefined;
+      this.working = false;
+      return;
+    }
+
     this.importFile = event.target.files[0];
     if (this.importFile) {
       if (!this.importFile.name.endsWith(".csv")) {
@@ -106,17 +117,19 @@ export class CreateLeadComponent implements OnInit {
       formData.append("client", this.form.value.client);
       formData.append("campaign", this.form.value.campaign);
       formData.append("file", this.importFile, this.importFile.name);
+      console.log(formData);
       this.working = true;
       this.leadsService.preview(formData).subscribe(
         (data: any) => {
-          if (data.content && data.content.length > 0) {
-            this.preview.headers = Object.keys(data.content[0]);
-            this.preview.rows = data.content;
-          } else {
-            this.snackBar.open("Invalid file uploaded", "Dismiss", {
-              duration: 2000
-            });
-          }
+            console.log(data);
+            if (data.content && data.content.length > 0) {
+              this.preview.headers = Object.keys(data.content[0]);
+              this.preview.rows = data.content;
+            } else {
+              this.snackBar.open("Invalid file uploaded", "Dismiss", {
+                duration: 2000
+              });
+            }
           this.working = false;
         },
         error => {
@@ -131,7 +144,30 @@ export class CreateLeadComponent implements OnInit {
 
   cancelImportFile() {
     this.working = true;
+    // this.preview = { headers: [], rows: [] };
+    // this.importFile = null;
+    this.leadsService.preview("null");
     this.preview = { headers: [], rows: [] };
+    // this.leadsService.preview("null").subscribe(
+    //   (data: any) => {
+    //     // if (data.content && data.content.length > 0) {
+    //     //   this.preview.headers = Object.keys(data.content[0]);
+    //     //   this.preview.rows = data.content;
+    //     // } else {
+    //     //   this.snackBar.open("Invalid file uploaded", "Dismiss", {
+    //     //     duration: 2000
+    //     //   });
+    //     // }
+    //     this.preview = { headers: [], rows: [] };
+    //     this.working = false;
+    //   },
+    //   error => {
+    //     this.snackBar.open("Error when cancel", "Dismiss", {
+    //       duration: 2000
+    //     });
+    //     this.working = false;
+    //   }
+    // );
     this.working = false;
   }
 
@@ -144,7 +180,7 @@ export class CreateLeadComponent implements OnInit {
       formData.append("client", this.form.value.client);
       formData.append("campaign", this.form.value.campaign);
       formData.append("file", this.importFile, this.importFile.name);
-      formData.append("user", this.authService.current['id']);
+      formData.append("user", this.authService.current["id"]);
 
       this.leadsService.create(formData).subscribe((data: any) => {
         this.snackBar.open(data.message, "Dismiss", { duration: 2000 });
