@@ -133,13 +133,23 @@ module.exports = {
             files[0].fd.endsWith('.xlsx')
           ) {
             inputFile = fs.readFileSync(files[0].fd);
-            inputFile = inputFile.Sheets['data'];
+            // inputFile = inputFile.Sheets['data'];
             parsedOutput = XLSX.parse(inputFile);
-            const headers = parsedOutput[0].data[0];
-            const values = parsedOutput[0].data[1];
-            result = {};
-            for (let i = 0; i < headers.length; i++) {
-              result[headers[i]] = values[i];
+            // console.log(parsedOutput);
+            for (let j = 0; j < parsedOutput.length; j++) {
+              console.log(parsedOutput[j]);
+              if (parsedOutput[j].name === 'data') {
+                // const headers = parsedOutput[0].data[0];
+                // const values = parsedOutput[0].data[1];
+                const headers = parsedOutput[j].data[0];
+                const values = parsedOutput[j].data[1];
+                result = {};
+                for (let i = 0; i < headers.length; i++) {
+                  result[headers[i]] = values[i];
+                }
+              } else {
+                return res.serverError({ message: 'Invalid file' });
+              }
             }
           }
 
