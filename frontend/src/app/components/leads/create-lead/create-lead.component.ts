@@ -117,7 +117,7 @@ export class CreateLeadComponent implements OnInit {
       formData.append("client", this.form.value.client);
       formData.append("campaign", this.form.value.campaign);
       formData.append("file", this.importFile, this.importFile.name);
-      console.log(formData);
+      // console.log(formData);
       this.working = true;
       this.leadsService.preview(formData).subscribe(
         (data: any) => {
