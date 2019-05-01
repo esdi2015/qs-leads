@@ -75,7 +75,7 @@ export class LeadsService {
     result = this.http.post(`${environment.api}leads/preview`, data); // , headers
     console.log(result);
     // const httpOptions = { headers: { ["Cache-Control"]: "no-cache, no-store, must-revalidate, post-check=0, pre-check=0"} }
-    return result; //, headers
+    return result;  // , headers
   }
 
 }

@@ -173,12 +173,14 @@ export class CreateCampaignComponent implements OnInit {
                 this.form.addControl("structure", this.fb.array([]));
 
                 const fields = data.content;
+                // tslint:disable-next-line: forin
                 for (let field in fields) {
                   (this.form.get("structure") as FormArray).push(
                     this.fb.group({
                       field_csv: [field, Validators.required],
                       field_api: [field, Validators.required],
-                      field_api_value: [fields[field]]
+                      field_api_value: ""
+                      // field_api_value: [fields[field]]
                     })
                   );
                 }

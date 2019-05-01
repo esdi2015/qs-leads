@@ -133,6 +133,7 @@ module.exports = {
             files[0].fd.endsWith('.xlsx')
           ) {
             inputFile = fs.readFileSync(files[0].fd);
+            inputFile = inputFile.Sheets['data'];
             parsedOutput = XLSX.parse(inputFile);
             const headers = parsedOutput[0].data[0];
             const values = parsedOutput[0].data[1];
