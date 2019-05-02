@@ -297,6 +297,10 @@ module.exports = {
               }
             }
 
+            console.log("000 - newRow");
+            console.log(newRow);
+            console.log("111 - newRow");
+
             const fieldsCount = Object.keys(newRow).length;
             let fieldsEmptyCount = 0;
             for (let field in newRow) {
