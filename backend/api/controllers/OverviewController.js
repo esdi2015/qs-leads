@@ -9,7 +9,7 @@ module.exports = {
   chart: async (req, res) => {
     try {
       const campaignsCountPerClient = (await Clients.find().populate(
-        "campaigns"
+        'campaigns'
       )).map(c => ({
         clientName: c.name,
         campaignsCount: c.campaigns.length
@@ -21,17 +21,22 @@ module.exports = {
       }));
       (await Leads.find()).forEach(lead => {
         const client = leadsCountPerClient.find(c => c.id === lead.client);
-        const leadsOK = lead.progress.filter(l => l.status === "Success")
-          .length;
-        const leadsFAIL = lead.progress.filter(l => l.status === "Error")
-          .length;
-        client.leads.ok += leadsOK;
-        client.leads.fail += leadsFAIL;
+        const leadsOK = lead.progress.filter(l => l.status === 'Success')
+            .length;
+        const leadsFAIL = lead.progress.filter(l => l.status === 'Error')
+            .length;
+
+        if (client) {
+          if (client.leads !== 'undefined') {
+            client.leads.ok += leadsOK;
+            client.leads.fail += leadsFAIL;
+          }
+        }
       });
 
       return res.ok([
-        { name: "CampaignsCountPerClient", value: campaignsCountPerClient },
-        { name: "LeadsCountPerClient", value: leadsCountPerClient }
+        { name: 'CampaignsCountPerClient', value: campaignsCountPerClient },
+        { name: 'LeadsCountPerClient', value: leadsCountPerClient }
       ]);
     } catch (e) {
       return res.serverError(e);
