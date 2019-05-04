@@ -45,7 +45,7 @@
         <mat-form-field appearance="outline" fxFlex>
             <mat-label>Status</mat-label>
             <mat-select formControlName="status">
-              <mat-option *ngFor="let status of ['live', 'stopped']" [value]="status">
+              <mat-option *ngFor="let status of ['live', 'stopped', 'finished']" [value]="status">
                 {{ status }}
               </mat-option>
             </mat-select>

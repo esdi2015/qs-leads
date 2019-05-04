@@ -253,72 +253,71 @@ module.exports = {
           if (files.length === 0)
           {return res.serverError({ message: 'No files uploaded' });}
 
-          let inputFile;
-          let parsedOutput;
-          let result;
+          const resultData = await parseLeadFile(req, files);
 
-          if (files[0].fd.endsWith('.csv')) {
-            inputFile = fs.readFileSync(files[0].fd, { encoding: 'utf8' });
-            parsedOutput = Papa.parse(inputFile, { header: true });
-            result = parsedOutput.data;
-          } else if (
-            files[0].fd.endsWith('.xls') ||
-            files[0].fd.endsWith('.xlsx')
-          ) {
-            inputFile = fs.readFileSync(files[0].fd);
-            parsedOutput = XLSX.parse(inputFile);
-            const headers = parsedOutput[0].data[0];
-            const values = parsedOutput[0].data;
-            result = [];
-            if (values && values.length) {
-              for (let i = 1; i < values.length; i++) {
-                let item = {};
-                for (let j = 0; j < headers.length; j++) {
-                  item[headers[j]] = values[i][j];
-                }
-                result.push(item);
-              }
-            }
-          }
-          const campaign = await Campaigns.findOne({ id: req.body.campaign });
-          let resultData = [];
+          // let inputFile;
+          // let parsedOutput;
+          // let result;
 
-          for (let row of result) {
-            let newRow = {};
-            for (let field of campaign.structure) {
-              newRow[field.field_csv] = field.field_api_value;
-            }
-            for (let key in row) {
-              const foundField = campaign.structure.find(
-                s => s.field_csv === key
-              );
-              if (foundField) {
-                newRow[key] = row[key];
-              }
-            }
+          // if (files[0].fd.endsWith('.csv')) {
+          //   inputFile = fs.readFileSync(files[0].fd, { encoding: 'utf8' });
+          //   parsedOutput = Papa.parse(inputFile, { header: true });
+          //   result = parsedOutput.data;
+          // } else if (
+          //   files[0].fd.endsWith('.xls') ||
+          //   files[0].fd.endsWith('.xlsx')
+          // ) {
+          //   inputFile = fs.readFileSync(files[0].fd);
+          //   parsedOutput = XLSX.parse(inputFile);
 
-            console.log("000 - newRow");
-            console.log(newRow);
-            console.log("111 - newRow");
+          //   const headers = parsedOutput[0].data[0];
+          //   const values = parsedOutput[0].data;
+          //   result = [];
+          //   if (values && values.length) {
+          //     for (let i = 1; i < values.length; i++) {
+          //       let item = {};
+          //       for (let j = 0; j < headers.length; j++) {
+          //         item[headers[j]] = values[i][j];
+          //       }
+          //       result.push(item);
+          //     }
+          //   }
+          // }
+          // const campaign = await Campaigns.findOne({ id: req.body.campaign });
+          // let resultData = [];
 
-            const fieldsCount = Object.keys(newRow).length;
-            let fieldsEmptyCount = 0;
-            for (let field in newRow) {
-              if (newRow[field].length === 0) {
-                fieldsEmptyCount++;
-              }
-            }
-            if (fieldsCount !== fieldsEmptyCount) {
-              resultData.push(newRow);
-            }
-          }
+          // for (let row of result) {
+          //   let newRow = {};
+          //   for (let field of campaign.structure) {
+          //     newRow[field.field_csv] = field.field_api_value;
+          //   }
+          //   for (let key in row) {
+          //     const foundField = campaign.structure.find(
+          //       s => s.field_csv === key
+          //     );
+          //     if (foundField) {
+          //       newRow[key] = row[key];
+          //     }
+          //   }
 
-          const timestamp = new Date();
+          //   const fieldsCount = Object.keys(newRow).length;
+          //   let fieldsEmptyCount = 0;
+          //   for (let field in newRow) {
+          //     if (newRow[field] === undefined) {
+          //       newRow[field] = '';
+          //     }
+          //     if (newRow[field].length === 0) {
+          //       fieldsEmptyCount++;
+          //     }
+          //   }
+          //   if (fieldsCount !== fieldsEmptyCount) {
+          //     resultData.push(newRow);
+          //   }
+          // }
 
           return res.ok({
             content: resultData,
-            message: 'File parsed',
-            date: timestamp.getTime()
+            message: 'File parsed'
           });
         }
       );
@@ -327,3 +326,66 @@ module.exports = {
     }
   }
 };
+
+async function parseLeadFile(req, files) {
+  let inputFile;
+  let parsedOutput;
+  let result;
+
+  if (files[0].fd.endsWith('.csv')) {
+    inputFile = fs.readFileSync(files[0].fd, { encoding: 'utf8' });
+    parsedOutput = Papa.parse(inputFile, { header: true });
+    result = parsedOutput.data;
+  } else if (
+    files[0].fd.endsWith('.xls') ||
+    files[0].fd.endsWith('.xlsx')
+  ) {
+    inputFile = fs.readFileSync(files[0].fd);
+    parsedOutput = XLSX.parse(inputFile);
+
+    const headers = parsedOutput[0].data[0];
+    const values = parsedOutput[0].data;
+    result = [];
+    if (values && values.length) {
+      for (let i = 1; i < values.length; i++) {
+        let item = {};
+        for (let j = 0; j < headers.length; j++) {
+          item[headers[j]] = values[i][j];
+        }
+        result.push(item);
+      }
+    }
+  }
+  const campaign = await Campaigns.findOne({ id: req.body.campaign });
+  let resultData = [];
+
+  for (let row of result) {
+    let newRow = {};
+    for (let field of campaign.structure) {
+      newRow[field.field_csv] = field.field_api_value;
+    }
+    for (let key in row) {
+      const foundField = campaign.structure.find(
+        s => s.field_csv === key
+      );
+      if (foundField) {
+        newRow[key] = row[key];
+      }
+    }
+
+    const fieldsCount = Object.keys(newRow).length;
+    let fieldsEmptyCount = 0;
+    for (let field in newRow) {
+      if (newRow[field] === undefined) {
+        newRow[field] = '';
+      }
+      if (newRow[field].length === 0) {
+        fieldsEmptyCount++;
+      }
+    }
+    if (fieldsCount !== fieldsEmptyCount) {
+      resultData.push(newRow);
+    }
+  }
+  return resultData;
+}
