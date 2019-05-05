@@ -109,57 +109,60 @@ module.exports = {
             return res.serverError({ message: 'No files uploaded' });
           }
 
-          let inputFile;
-          let parsedOutput;
-          let result;
+          // let inputFile;
+          // let parsedOutput;
+          // let result;
 
-          if (files[0].fd.endsWith('.csv')) {
-            inputFile = fs.readFileSync(files[0].fd, { encoding: 'utf8' });
-            parsedOutput = Papa.parse(inputFile, { header: true });
-            result = parsedOutput.data;
-          } else if (
-            files[0].fd.endsWith('.xls') ||
-            files[0].fd.endsWith('.xlsx')
-          ) {
-            inputFile = fs.readFileSync(files[0].fd);
-            parsedOutput = XLSX.parse(inputFile);
-            result = parsedOutput;
-          }
-          const campaign = await Campaigns.findOne({ id: req.body.campaign });
-          let resultData = [];
-          let resultProgress = [];
-          let index = 0;
+          // if (files[0].fd.endsWith('.csv')) {
+          //   inputFile = fs.readFileSync(files[0].fd, { encoding: 'utf8' });
+          //   parsedOutput = Papa.parse(inputFile, { header: true });
+          //   result = parsedOutput.data;
+          // } else if (
+          //   files[0].fd.endsWith('.xls') ||
+          //   files[0].fd.endsWith('.xlsx')
+          // ) {
+          //   inputFile = fs.readFileSync(files[0].fd);
+          //   parsedOutput = XLSX.parse(inputFile);
+          //   result = parsedOutput;
+          // }
+          // const campaign = await Campaigns.findOne({ id: req.body.campaign });
+          // let resultData = [];
+          // let resultProgress = [];
+          // let index = 0;
 
-          for (let row of result) {
-            let newRow = {};
-            for (let field of campaign.structure) {
-              newRow[field.field_api] = field.field_api_value;
-            }
-            for (let key in row) {
-              const foundField = campaign.structure.find(
-                s => s.field_csv === key
-              );
-              if (foundField) {
-                newRow[foundField.field_api] = row[key];
-              }
-            }
-            const fieldsCount = Object.keys(newRow).length;
-            let fieldsEmptyCount = 0;
-            for (let field in newRow) {
-              if (newRow[field].length === 0) {
-                fieldsEmptyCount++;
-              }
-            }
-            if (fieldsCount !== fieldsEmptyCount) {
-              resultData.push({ id: index, value: newRow });
-              resultProgress.push({
-                id: index,
-                status: 'Pending',
-                response: ''
-              });
-            }
-            index++;
-          }
+          // for (let row of result) {
+          //   let newRow = {};
+          //   for (let field of campaign.structure) {
+          //     newRow[field.field_api] = field.field_api_value;
+          //   }
+          //   for (let key in row) {
+          //     const foundField = campaign.structure.find(
+          //       s => s.field_csv === key
+          //     );
+          //     if (foundField) {
+          //       newRow[foundField.field_api] = row[key];
+          //     }
+          //   }
+          //   const fieldsCount = Object.keys(newRow).length;
+          //   let fieldsEmptyCount = 0;
+          //   for (let field in newRow) {
+          //     if (newRow[field].length === 0) {
+          //       fieldsEmptyCount++;
+          //     }
+          //   }
+          //   if (fieldsCount !== fieldsEmptyCount) {
+          //     resultData.push({ id: index, value: newRow });
+          //     resultProgress.push({
+          //       id: index,
+          //       status: 'Pending',
+          //       response: ''
+          //     });
+          //   }
+          //   index++;
+          // }
+
+          let [resultData, resultProgress] = await parseLeadFile(req, files, 'database');
+
           const newLead = await Leads.create({
             name: req.body.name,
             filename: files[0].filename,
@@ -253,67 +256,7 @@ module.exports = {
           if (files.length === 0)
           {return res.serverError({ message: 'No files uploaded' });}
 
-          const resultData = await parseLeadFile(req, files);
-
-          // let inputFile;
-          // let parsedOutput;
-          // let result;
-
-          // if (files[0].fd.endsWith('.csv')) {
-          //   inputFile = fs.readFileSync(files[0].fd, { encoding: 'utf8' });
-          //   parsedOutput = Papa.parse(inputFile, { header: true });
-          //   result = parsedOutput.data;
-          // } else if (
-          //   files[0].fd.endsWith('.xls') ||
-          //   files[0].fd.endsWith('.xlsx')
-          // ) {
-          //   inputFile = fs.readFileSync(files[0].fd);
-          //   parsedOutput = XLSX.parse(inputFile);
-
-          //   const headers = parsedOutput[0].data[0];
-          //   const values = parsedOutput[0].data;
-          //   result = [];
-          //   if (values && values.length) {
-          //     for (let i = 1; i < values.length; i++) {
-          //       let item = {};
-          //       for (let j = 0; j < headers.length; j++) {
-          //         item[headers[j]] = values[i][j];
-          //       }
-          //       result.push(item);
-          //     }
-          //   }
-          // }
-          // const campaign = await Campaigns.findOne({ id: req.body.campaign });
-          // let resultData = [];
-
-          // for (let row of result) {
-          //   let newRow = {};
-          //   for (let field of campaign.structure) {
-          //     newRow[field.field_csv] = field.field_api_value;
-          //   }
-          //   for (let key in row) {
-          //     const foundField = campaign.structure.find(
-          //       s => s.field_csv === key
-          //     );
-          //     if (foundField) {
-          //       newRow[key] = row[key];
-          //     }
-          //   }
-
-          //   const fieldsCount = Object.keys(newRow).length;
-          //   let fieldsEmptyCount = 0;
-          //   for (let field in newRow) {
-          //     if (newRow[field] === undefined) {
-          //       newRow[field] = '';
-          //     }
-          //     if (newRow[field].length === 0) {
-          //       fieldsEmptyCount++;
-          //     }
-          //   }
-          //   if (fieldsCount !== fieldsEmptyCount) {
-          //     resultData.push(newRow);
-          //   }
-          // }
+          const [resultData]= await parseLeadFile(req, files, 'preview');
 
           return res.ok({
             content: resultData,
@@ -327,7 +270,7 @@ module.exports = {
   }
 };
 
-async function parseLeadFile(req, files) {
+async function parseLeadFile(req, files, target='preview') {
   let inputFile;
   let parsedOutput;
   let result;
@@ -358,18 +301,28 @@ async function parseLeadFile(req, files) {
   }
   const campaign = await Campaigns.findOne({ id: req.body.campaign });
   let resultData = [];
+  let resultProgress = [];
+  let index = 0;
 
   for (let row of result) {
     let newRow = {};
     for (let field of campaign.structure) {
-      newRow[field.field_csv] = field.field_api_value;
+      if (target === 'preview') {
+        newRow[field.field_csv] = field.field_api_value;
+      } else if (target === 'database') {
+        newRow[field.field_api] = field.field_api_value;
+      }
     }
     for (let key in row) {
       const foundField = campaign.structure.find(
         s => s.field_csv === key
       );
       if (foundField) {
-        newRow[key] = row[key];
+        if (target === 'preview') {
+          newRow[key] = row[key];
+        } else if (target === 'database') {
+          newRow[foundField.field_api] = row[key];
+        }
       }
     }
 
@@ -383,9 +336,20 @@ async function parseLeadFile(req, files) {
         fieldsEmptyCount++;
       }
     }
+
     if (fieldsCount !== fieldsEmptyCount) {
-      resultData.push(newRow);
+      if (target === 'preview') {
+        resultData.push(newRow);
+      } else if (target === 'database') {
+        resultData.push({ id: index, value: newRow });
+        resultProgress.push({
+          id: index,
+          status: 'Pending',
+          response: ''
+        });
+      }
     }
+    index++;
   }
-  return resultData;
+  return [resultData, resultProgress];
 }
