@@ -37,25 +37,6 @@ module.exports = {
           return res.status(401).send({ message: 'Invalid email or password' });
         }
       } else {
-        // try {
-        //   const hash = crypto
-        //     .createHmac('sha256', 'leadspeed')
-        //     .update(req.body.password)
-        //     .digest('hex');
-        //   const newUser = await Users.create({
-        //     firstName: 'Admin',
-        //     lastName: 'Admin',
-        //     email: 'admin@leadspeed.com',
-        //     password: hash,
-        //     role: 'Admin'
-        //   });
-        //   return res.ok({
-        //     content: newUser,
-        //     message: 'User created'
-        //   });
-        // } catch (e) {
-        //   return res.serverError(e);
-        // }
         return res.status(404).send({ message: 'User not found' });
       }
     } catch (e) {
