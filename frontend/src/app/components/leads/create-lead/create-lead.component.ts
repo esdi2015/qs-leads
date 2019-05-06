@@ -121,9 +121,6 @@ export class CreateLeadComponent implements OnInit {
       this.working = true;
       this.leadsService.preview(formData).subscribe(
         (data: any) => {
-            console.log("000 - data");
-            console.log(data);
-            console.log("111 - data");
             if (data.content && data.content.length > 0) {
               this.preview.headers = Object.keys(data.content[0]);
               this.preview.rows = data.content;
