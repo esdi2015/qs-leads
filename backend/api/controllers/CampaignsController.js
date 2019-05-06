@@ -134,10 +134,9 @@ module.exports = {
           ) {
             inputFile = fs.readFileSync(files[0].fd);
             parsedOutput = XLSX.parse(inputFile);
-            // console.log(parsedOutput.length);
+
             for (let j = 0; j < parsedOutput.length; j++) {
               if (parsedOutput[j].name === 'data') {
-                console.log(parsedOutput[j].data);
                 const headers = parsedOutput[j].data[0];
                 // const values = parsedOutput[j].data[1];
                 result = {};

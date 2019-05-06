@@ -87,10 +87,10 @@ export class CreateLeadComponent implements OnInit {
   }
 
   onImportFileChanged(event: any) {
-    console.log(this.importFile);
-    console.log(event.target.files);
+    // console.log(this.importFile);
+    // console.log(event.target.files);
     if (event.cancelable === true) {
-      console.log(event.cancelable);
+      // console.log(event.cancelable);
       this.working = true;
       this.preview = { headers: [], rows: [] };
       // this.importFile = undefined;
@@ -100,12 +100,12 @@ export class CreateLeadComponent implements OnInit {
 
     this.importFile = event.target.files[0];
     if (this.importFile) {
-      if (!this.importFile.name.endsWith(".csv")) {
-        this.snackBar.open("ERROR! You can only upload CSV files", "Dismiss", {
-          duration: 5000
-        });
-        return;
-      }
+      // if (!this.importFile.name.endsWith(".csv")) {
+      //   this.snackBar.open("ERROR! You can only upload CSV files", "Dismiss", {
+      //     duration: 5000
+      //   });
+      //   return;
+      // }
       if (!this.form.value.campaign) {
         this.snackBar.open("ERROR! You must select Campaign first", "Dismiss", {
           duration: 5000
@@ -121,7 +121,9 @@ export class CreateLeadComponent implements OnInit {
       this.working = true;
       this.leadsService.preview(formData).subscribe(
         (data: any) => {
+            console.log("000 - data");
             console.log(data);
+            console.log("111 - data");
             if (data.content && data.content.length > 0) {
               this.preview.headers = Object.keys(data.content[0]);
               this.preview.rows = data.content;

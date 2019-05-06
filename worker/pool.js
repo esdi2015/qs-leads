@@ -71,13 +71,14 @@ class Pool {
     }
 
     const options = { url: campaign.url, method: "post", form: formData };
-    console.log(options);
     const callback = (error, response, body) => {
       this.db.collection("leads").updateOne(
         { _id: lead._id, "progress.id": jobNumber },
         {
           $set: {
-            "progress.$.email": lead.data[jobNumber].value['EM'],
+            "progress.$.email": 
+              lead.data[jobNumber].value['EM'] != undefined ? lead.data[jobNumber].value['EM'] :
+              (lead.data[jobNumber].value['Email'] != undefined ? lead.data[jobNumber].value['Email'] : 'not set'),
             "progress.$.status":
               error || response.statusCode !== 200 ? "Error" : "Success",
             "progress.$.response": body
