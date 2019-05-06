@@ -150,7 +150,7 @@ module.exports = {
     cors: {
       allowOrigins: [
         'https://qstage.infusemedia.com',
-	'http://qstage.infusemedia.com',
+        'http://qstage.infusemedia.com',
       ]
     },
 

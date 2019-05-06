@@ -41,6 +41,8 @@ export class AppComponent implements OnInit {
       this.auth
         .login(this.form.value.email, this.form.value.password)
         .subscribe(result => {
+          console.log("submit() - result");
+          console.log(result);
           this.router.navigateByUrl("/dashboard");
         });
     }

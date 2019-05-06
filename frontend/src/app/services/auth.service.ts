@@ -15,6 +15,7 @@ export class AuthService {
       .post(`${environment.api}auth/login`, { email, password })
       .pipe(
         map((result: any) => {
+          // console.log(result);
           this.set(result.content);
           return result;
         })
