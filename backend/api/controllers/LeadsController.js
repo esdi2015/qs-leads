@@ -109,58 +109,6 @@ module.exports = {
             return res.serverError({ message: 'No files uploaded' });
           }
 
-          // let inputFile;
-          // let parsedOutput;
-          // let result;
-
-          // if (files[0].fd.endsWith('.csv')) {
-          //   inputFile = fs.readFileSync(files[0].fd, { encoding: 'utf8' });
-          //   parsedOutput = Papa.parse(inputFile, { header: true });
-          //   result = parsedOutput.data;
-          // } else if (
-          //   files[0].fd.endsWith('.xls') ||
-          //   files[0].fd.endsWith('.xlsx')
-          // ) {
-          //   inputFile = fs.readFileSync(files[0].fd);
-          //   parsedOutput = XLSX.parse(inputFile);
-          //   result = parsedOutput;
-          // }
-          // const campaign = await Campaigns.findOne({ id: req.body.campaign });
-          // let resultData = [];
-          // let resultProgress = [];
-          // let index = 0;
-
-          // for (let row of result) {
-          //   let newRow = {};
-          //   for (let field of campaign.structure) {
-          //     newRow[field.field_api] = field.field_api_value;
-          //   }
-          //   for (let key in row) {
-          //     const foundField = campaign.structure.find(
-          //       s => s.field_csv === key
-          //     );
-          //     if (foundField) {
-          //       newRow[foundField.field_api] = row[key];
-          //     }
-          //   }
-          //   const fieldsCount = Object.keys(newRow).length;
-          //   let fieldsEmptyCount = 0;
-          //   for (let field in newRow) {
-          //     if (newRow[field].length === 0) {
-          //       fieldsEmptyCount++;
-          //     }
-          //   }
-          //   if (fieldsCount !== fieldsEmptyCount) {
-          //     resultData.push({ id: index, value: newRow });
-          //     resultProgress.push({
-          //       id: index,
-          //       status: 'Pending',
-          //       response: ''
-          //     });
-          //   }
-          //   index++;
-          // }
-
           let [resultData, resultProgress] = await parseLeadFile(req, files, 'database');
 
           const newLead = await Leads.create({

@@ -71,11 +71,7 @@ class Pool {
     }
 
     const options = { url: campaign.url, method: "post", form: formData };
-    console.log(options);
     const callback = (error, response, body) => {
-      // console.log(lead);
-      // console.log(lead.data[jobNumber].value['EM']);
-      // console.log(lead.data[jobNumber].value['Email']);
       this.db.collection("leads").updateOne(
         { _id: lead._id, "progress.id": jobNumber },
         {
