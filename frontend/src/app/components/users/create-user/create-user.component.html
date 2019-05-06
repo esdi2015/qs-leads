@@ -29,12 +29,12 @@
       <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="center space-around">
         <mat-form-field appearance="outline" fxFlex>
           <mat-label>Email</mat-label>
-          <input matInput formControlName="email">
+          <input matInput formControlName="email" autocomplete="off">
           <mat-error>This field is required</mat-error>
         </mat-form-field>
         <mat-form-field appearance="outline" fxFlex>
           <mat-label>Password</mat-label>
-          <input matInput formControlName="password" type="password">
+          <input matInput formControlName="password" type="password" autocomplete="new-password">
           <mat-error>This field is required</mat-error>
         </mat-form-field>
       </div>
