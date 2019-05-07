@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { FormBuilder, Validators, FormGroup } from "@angular/forms";
 import { Router, ActivatedRoute } from "@angular/router";
 import { AuthService } from "./services/auth.service";
+import { MatSnackBar } from "@angular/material";
 
 @Component({
   selector: "app-root",
@@ -19,7 +20,8 @@ export class AppComponent implements OnInit {
     // private route: ActivatedRoute,
     public auth: AuthService,
     private fb: FormBuilder,
-    private fbls: FormBuilder
+    private fbls: FormBuilder,
+    private snackBar: MatSnackBar,
   ) {}
 
   ngOnInit() {
@@ -41,9 +43,14 @@ export class AppComponent implements OnInit {
       this.auth
         .login(this.form.value.email, this.form.value.password)
         .subscribe(result => {
-          console.log("submit() - result");
-          console.log(result);
+          // console.log("submit() - result");
+          // console.log(result);
           this.router.navigateByUrl("/dashboard");
+        },
+        error => { 
+          // console.log("submit() - error"); 
+          // console.log(error); 
+          this.snackBar.open(error.error.message, "Dismiss", { duration: 7000 });
         });
     }
   }

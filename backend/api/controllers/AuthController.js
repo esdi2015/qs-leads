@@ -7,17 +7,14 @@
 
 const crypto = require('crypto');
 
-console.log('12121212121212');
-
 module.exports = {
   login: async (req, res) => {
-    console.log('login: async (req, res)');
     try {
       console.log(_.get(req.body, 'email'));
       const email = _.get(req.body, 'email');
       const password = _.get(req.body, 'password');
       const user = await Users.findOne({ email: email });
-      console.log(user);
+      // console.log(user);
 
       const hash = crypto
         .createHmac('sha256', 'leadspeed')
@@ -25,7 +22,7 @@ module.exports = {
         .digest('hex');
 
       if (user) {
-        console.log('if (user)');
+        // console.log('if (user)');
         if (hash === user.password) {
           req.session.user = user;
           return res.ok({

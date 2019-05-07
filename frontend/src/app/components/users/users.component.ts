@@ -5,6 +5,7 @@ import * as moment from "moment";
 import { UsersService } from "src/app/services/users.service";
 import { TableComponent } from "src/app/shared/table/table.component";
 import { DialogQuestionComponent } from "src/app/shared/dialog-question/dialog-question.component";
+import { AuthService } from "src/app/services/auth.service";
 
 @Component({
   selector: "app-users",
@@ -22,7 +23,8 @@ export class UsersComponent implements OnInit {
     private dialog: MatDialog,
     private usersService: UsersService,
     private snackBar: MatSnackBar,
-    private router: Router
+    private router: Router,
+    private authService: AuthService
   ) {
     this.api = {
       serviceName: "usersService",
@@ -96,7 +98,12 @@ export class UsersComponent implements OnInit {
         }
       }
     ];
+    // console.log(this.authService.current);
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    if (this.authService.current["role"] !== "Admin") {
+      this.columns.splice(-1, 1);
+    }
+  }
 }
