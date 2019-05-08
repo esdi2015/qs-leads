@@ -10,7 +10,7 @@ const crypto = require('crypto');
 module.exports = {
   login: async (req, res) => {
     try {
-      console.log(_.get(req.body, 'email'));
+      // console.log(_.get(req.body, 'email'));
       const email = _.get(req.body, 'email');
       const password = _.get(req.body, 'password');
       const user = await Users.findOne({ email: email });

@@ -102,7 +102,7 @@ export class UsersComponent implements OnInit {
         }
       }
     ];
-    console.log(this.authService.current);
+    // console.log(this.authService.current);
   }
 
   ngOnInit() {}
