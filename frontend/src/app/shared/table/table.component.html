@@ -22,10 +22,12 @@
             <button mat-button (click)="column.actions.clone(row)" *ngIf="column.actions.clone">CLONE</button>
             <button mat-button (click)="column.actions.edit(row)" *ngIf="column.actions.edit">EDIT</button>
             <button mat-button (click)="column.actions.delete(row)" *ngIf="column.actions.delete">DELETE</button>
+            <button mat-button (click)="column.actions.delete_user(row)" *ngIf="column.actions.delete_user && column.conditions && column.conditions.delete_user(row)">DELETE</button>
+            <button mat-button (click)="column.actions.edit_user(row)" *ngIf="column.actions.edit_user && column.conditions && column.conditions.edit_user(row)">EDIT</button>
             <button mat-button (click)="column.actions.stop(row)" *ngIf="column.actions.stop && column.conditions && column.conditions.stop">STOP</button>
             <button mat-button (click)="column.actions.run(row)" *ngIf="column.actions.run && column.conditions && column.conditions.run">RUN</button>
-            <button mat-button (click)="column.actions.result(row)" *ngIf="column.actions.result && column.conditions && column.conditions.result">RESULTS</button>
-            <button mat-button (click)="column.actions.download(row)" *ngIf="column.actions.download && column.conditions && column.conditions.download">DOWNLOAD</button>
+            <button mat-button (click)="column.actions.result(row)" *ngIf="column.actions.result && column.conditions && column.conditions.result(row)">RESULTS</button>
+            <button mat-button (click)="column.actions.download(row)" *ngIf="column.actions.download && column.conditions && column.conditions.download(row)">DOWNLOAD</button>
           </ng-container>
         </td>
       </ng-container>

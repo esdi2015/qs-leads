@@ -47,9 +47,9 @@ export class AppComponent implements OnInit {
           // console.log(result);
           this.router.navigateByUrl("/dashboard");
         },
-        error => { 
-          // console.log("submit() - error"); 
-          // console.log(error); 
+        error => {
+          // console.log("submit() - error");
+          // console.log(error);
           this.snackBar.open(error.error.message, "Dismiss", { duration: 7000 });
         });
     }

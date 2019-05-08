@@ -72,10 +72,10 @@ export class UsersComponent implements OnInit {
       {
         key: "actions",
         actions: {
-          edit: (row: any) => {
+          edit_user: (row: any) => {
             this.router.navigateByUrl(`/users/edit/${row.id}`);
           },
-          delete: (row: any) => {
+          delete_user: (row: any) => {
             let dialogRef = this.dialog.open(DialogQuestionComponent, {
               data: {
                 title: `Delete User`,
@@ -95,15 +95,15 @@ export class UsersComponent implements OnInit {
               }
             });
           }
+        },
+        conditions: {
+          edit_user: (row: any) => this.authService.current["role"] === "Admin",
+          delete_user: (row: any) => this.authService.current["role"] === "Admin" && this.authService.current["id"] !== row.id
         }
       }
     ];
-    // console.log(this.authService.current);
+    console.log(this.authService.current);
   }
 
-  ngOnInit() {
-    if (this.authService.current["role"] !== "Admin") {
-      this.columns.splice(-1, 1);
-    }
-  }
+  ngOnInit() {}
 }
