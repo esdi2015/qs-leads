@@ -42,11 +42,52 @@ module.exports = {
           .limit(10)
           .skip(page * 10);
 
+        // console.log(leads);  
+
+        // const leads22 = await Leads.find({name: { $regex: "/\.*ibm\.*/i" }}).limit(10).skip(page * 10).pretty();
+
+        const db = Leads.getDatastore().manager;
+        // console.log(db);
+        // console.log("==========");
+        let reg = "/\.*"+search+"\.*/i";
+        console.log(search);
+        console.log(reg);
+        const leads2 = await db.collection(Leads.tableName).find({name: new RegExp(reg)}).limit(10).skip(page * 10).toArray();
+        console.log(leads2);
+        const dataWithIds = JSON.parse(JSON.stringify(leads2).replace("/_id/g", "id"));
+
+        // .toArray(
+        //   function(err, res){ 
+        //     console.log(err);
+        //     console.log(res);
+        //     // return res;
+        //   });
+
+        // const dataWithObjectIds = await leads2.toArray();
+
+        // Pet.native(function(err, collection) {
+        //   if (err) return res.serverError(err);
+        
+        //   collection.find({}, {
+        //     name: true
+        //   }).toArray(function (err, results) {
+        //     if (err) return res.serverError(err);
+        //     return res.ok(results);
+        //   });
+        // });
+
+
+        console.log(dataWithIds);
+        console.log(dataWithIds.length);
+
         const leadsTotal = await Leads.count({ name :  { 'contains' : search } });
+
+        const leadsTotal2 = await db.collection(Leads.tableName).count({name: { $regex: "/\.*"+ search +"\.*/i" }});
+
         return res.ok({
-          content: leads,
+          content: dataWithIds,
           metadata: {
-            total: leadsTotal
+            total: leadsTotal2
           }
         });
       }
