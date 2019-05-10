@@ -33,14 +33,20 @@ module.exports = {
           }
         });
       } else {
-        const leads = await Leads.find(
-          { name :  { 'contains' : search } }
-        )
+        const leads = await Leads.find({
+          or : [
+            { name: { 'contains' : search } },
+            { name: { 'contains' : search.toUpperCase() } },
+            { name: { 'contains' : search.toLowerCase() } }
+          ]
+        })
         .populate('client')
         .populate('campaign')
           .sort(`${sort} ${direction}`)
           .limit(10)
           .skip(page * 10);
+
+        // { name :  { 'contains' : search } }
 
         // console.log(leads);
 
@@ -49,13 +55,14 @@ module.exports = {
         const db = Leads.getDatastore().manager;
         // console.log(db);
         // console.log("==========");
-        let reg = '/\.*'+search+'\.*/i';
+        // let reg = '/\.*'+search+'\.*/i';
         // new RegExp(`^${emailVariable}$`, 'i')
-        console.log(search);
-        console.log(reg);
+        // console.log(search);
+        // console.log(reg);
 
-        const leads2 = await db.collection(Leads.tableName).find({ name: {$regex: new RegExp(`${search}`, 'i') }})
-        .populate({client})
+        let leads2 = await db.collection(Leads.tableName)
+        .find({ name: {$regex: new RegExp(`${search}`, 'i') }})
+        // .populate({client})
         // .populate('campaign')
         // .sort(`${sort} ${direction}`)
         // .aggregate([
@@ -73,8 +80,16 @@ module.exports = {
         .skip(page * 10)
         .toArray();
 
-        console.log(leads2);
-        const dataWithIds = JSON.parse(JSON.stringify(leads2).replace('/_id/g', 'id'));
+        // const leads3 = await leads2.populate('client').populate('campaign').toArray();
+
+        // console.log(leads3);
+
+        console.log(leads2.constructor.name);
+        console.log(leads.constructor.name);
+
+
+        // console.log(leads2);
+        const dataWithIds = JSON.parse(JSON.stringify(leads2).replace(/_id/g, 'id'));
 
         // .toArray(
         //   function(err, res){
@@ -100,14 +115,20 @@ module.exports = {
         console.log(dataWithIds);
         console.log(dataWithIds.length);
 
-        const leadsTotal = await Leads.count({ name :  { 'contains' : search } });
+        const leadsTotal = await Leads.count({
+          or : [
+            { name: { 'contains' : search } },
+            { name: { 'contains' : search.toUpperCase() } },
+            { name: { 'contains' : search.toLowerCase() } }
+          ]
+        });
 
         const leadsTotal2 = await db.collection(Leads.tableName).count({ name: {$regex: new RegExp(`${search}`, 'i') }});
 
         return res.ok({
-          content: dataWithIds,
+          content: leads,
           metadata: {
-            total: leadsTotal2
+            total: leadsTotal
           }
         });
       }
