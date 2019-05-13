@@ -37,7 +37,8 @@ module.exports = {
           or : [
             { name: { 'contains' : search } },
             { name: { 'contains' : search.toUpperCase() } },
-            { name: { 'contains' : search.toLowerCase() } }
+            { name: { 'contains' : search.toLowerCase() } },
+            { name: { 'contains' : search.charAt(0).toUpperCase() + search.slice(1)} }
           ]
         })
         .populate('client')
@@ -46,84 +47,14 @@ module.exports = {
           .limit(10)
           .skip(page * 10);
 
-        // { name :  { 'contains' : search } }
-
-        // console.log(leads);
-
-        // const leads22 = await Leads.find({name: { $regex: "/\.*ibm\.*/i" }}).limit(10).skip(page * 10).pretty();
-
-        const db = Leads.getDatastore().manager;
-        // console.log(db);
-        // console.log("==========");
-        // let reg = '/\.*'+search+'\.*/i';
-        // new RegExp(`^${emailVariable}$`, 'i')
-        // console.log(search);
-        // console.log(reg);
-
-        let leads2 = await db.collection(Leads.tableName)
-        .find({ name: {$regex: new RegExp(`${search}`, 'i') }})
-        // .populate({client})
-        // .populate('campaign')
-        // .sort(`${sort} ${direction}`)
-        // .aggregate([
-        //   {
-        //     $lookup:
-        //       {
-        //         from: 'clients',
-        //         localField: 'client',
-        //         foreignField: '_id',
-        //         as: 'client'
-        //       }
-        //   }
-        // ])
-        .limit(10)
-        .skip(page * 10)
-        .toArray();
-
-        // const leads3 = await leads2.populate('client').populate('campaign').toArray();
-
-        // console.log(leads3);
-
-        console.log(leads2.constructor.name);
-        console.log(leads.constructor.name);
-
-
-        // console.log(leads2);
-        const dataWithIds = JSON.parse(JSON.stringify(leads2).replace(/_id/g, 'id'));
-
-        // .toArray(
-        //   function(err, res){
-        //     console.log(err);
-        //     console.log(res);
-        //     // return res;
-        //   });
-
-        // const dataWithObjectIds = await leads2.toArray();
-
-        // Pet.native(function(err, collection) {
-        //   if (err) return res.serverError(err);
-
-        //   collection.find({}, {
-        //     name: true
-        //   }).toArray(function (err, results) {
-        //     if (err) return res.serverError(err);
-        //     return res.ok(results);
-        //   });
-        // });
-
-
-        console.log(dataWithIds);
-        console.log(dataWithIds.length);
-
         const leadsTotal = await Leads.count({
           or : [
             { name: { 'contains' : search } },
             { name: { 'contains' : search.toUpperCase() } },
-            { name: { 'contains' : search.toLowerCase() } }
+            { name: { 'contains' : search.toLowerCase() } },
+            { name: { 'contains' : search.charAt(0).toUpperCase() + search.slice(1)} }
           ]
         });
-
-        const leadsTotal2 = await db.collection(Leads.tableName).count({ name: {$regex: new RegExp(`${search}`, 'i') }});
 
         return res.ok({
           content: leads,
