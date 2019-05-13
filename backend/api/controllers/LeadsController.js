@@ -38,7 +38,7 @@ module.exports = {
             { name: { 'contains' : search } },
             { name: { 'contains' : search.toUpperCase() } },
             { name: { 'contains' : search.toLowerCase() } },
-            { name: { 'contains' : search.charAt(0).toUpperCase() + search.slice(1)} }
+            { name: { 'contains' : search.charAt(0).toUpperCase() + search.slice(1).toLowerCase()} }
           ]
         })
         .populate('client')
@@ -52,7 +52,7 @@ module.exports = {
             { name: { 'contains' : search } },
             { name: { 'contains' : search.toUpperCase() } },
             { name: { 'contains' : search.toLowerCase() } },
-            { name: { 'contains' : search.charAt(0).toUpperCase() + search.slice(1)} }
+            { name: { 'contains' : search.charAt(0).toUpperCase() + search.slice(1).toLowerCase()} }
           ]
         });
 
