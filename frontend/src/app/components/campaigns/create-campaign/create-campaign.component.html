@@ -18,12 +18,12 @@
         <mat-form-field appearance="outline" fxFlex>
           <mat-label>Campaign name</mat-label>
           <input matInput formControlName="name">
-          <mat-error>This field is required</mat-error>
+          <mat-error>This field is required, should start with letter or number, minlength 3 symbols</mat-error>
         </mat-form-field>
         <mat-form-field appearance="outline" fxFlex>
           <mat-label>URL</mat-label>
           <input matInput formControlName="url">
-          <mat-error>This field is required</mat-error>
+          <mat-error>This field is required, should start with 'http', minlength 10 symbols</mat-error>
         </mat-form-field>
       </div>
       <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="center space-around">

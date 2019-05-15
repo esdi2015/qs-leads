@@ -96,8 +96,8 @@ export class LeadsComponent implements OnInit, OnChanges {
           }
         },
         conditions: {
-          result: (row: any) => row.status === "Finished",
-          download: (row: any) => row.status === "Finished"
+          result: (row: any) => !["Started", "Pending"].includes(row.status),
+          download: (row: any) => !["Started", "Pending"].includes(row.status)
         }
       }
     ];

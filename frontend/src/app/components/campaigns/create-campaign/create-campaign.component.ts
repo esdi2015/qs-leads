@@ -118,8 +118,8 @@ export class CreateCampaignComponent implements OnInit {
       this.clients = data;
     });
     this.form = this.fb.group({
-      name: ["", Validators.required],
-      url: ["", Validators.required],
+      name: ["", [Validators.required, Validators.minLength(3), Validators.pattern(new RegExp(/^[A-Z0-9]/i))]],
+      url: ["", [Validators.required, Validators.minLength(10), Validators.pattern(new RegExp(/^http/i))]],
       delay: [1, Validators.required],
       client: [null, Validators.required],
       status: [null, Validators.required],
