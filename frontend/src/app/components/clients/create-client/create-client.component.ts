@@ -43,7 +43,7 @@ export class CreateClientComponent implements OnInit {
 
   ngOnInit() {
     this.form = this.fb.group({
-      name: ["", Validators.required]
+      name: ["", [Validators.required, Validators.minLength(3), Validators.pattern(new RegExp(/^[A-Z0-9]/i))]]
     });
   }
 

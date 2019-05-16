@@ -69,7 +69,7 @@ export class CreateLeadComponent implements OnInit {
       this.clients = data;
     });
     this.form = this.fb.group({
-      name: ["", Validators.required],
+      name: ["", [Validators.required, Validators.minLength(3), Validators.pattern(new RegExp(/^[A-Z0-9]/i))]],
       client: ["", Validators.required],
       campaign: [{ value: "", disabled: true }, Validators.required]
     });
