@@ -13,7 +13,8 @@
         <ng-container>
           <form fxLayout="row" fxLayoutAlign="center center" fxFill [formGroup]="form_search" (submit)="search_leads()">
             <mat-form-field class="search-form">
-              <input matInput placeholder="Search Leads" formControlName="search_leads" type="text">
+              <input matInput placeholder="Search Leads" formControlName="search_leads" type="text" minlength="2">
+              <mat-error>This field is required, should start with any character exclude whitespace, minlength 2 symbols</mat-error>
             </mat-form-field>
             <button button="submit" class="search-button" mat-raised-button color="primary" type="submit">Search</button>
               <!-- <input type="text" class="form-control" placeholder="Search" autofocus> -->

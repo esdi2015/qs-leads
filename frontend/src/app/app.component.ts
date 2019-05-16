@@ -30,7 +30,7 @@ export class AppComponent implements OnInit {
       password: ["", Validators.required]
     });
     this.form_search = this.fbls.group({
-      search_leads: ["", [Validators.minLength(2)]]
+      search_leads: ["", [Validators.minLength(2), Validators.pattern(new RegExp(/^[^\s]/i))]]
     });
   }
 
@@ -64,7 +64,13 @@ export class AppComponent implements OnInit {
   search_leads(): void {
     if (this.form_search.valid) {
       const text = this.form_search.value.search_leads;
-      this.router.navigate( ["/leads/search/" + text] );
+      if (text) {
+        this.router.navigate( ["/leads/search/" + text] );
+      } else {
+        return;
+      }    
+    } else {
+      // console.log(this.form_search.valid);
     }
   }
 }
