@@ -7,9 +7,6 @@
       <span>LeadSpeed</span>
       <span class="toolbar-spacer"></span>
       <div *ngIf="router.url.includes('/leads/search') || router.url === '/leads'">
-        <!-- <mat-form-field appearance="outline" fxFlex>
-          <input matInput formControlName="searchLeads">
-        </mat-form-field> -->
         <ng-container>
           <form fxLayout="row" fxLayoutAlign="center center" fxFill [formGroup]="form_search" (submit)="search_leads()">
             <mat-form-field class="search-form">
@@ -17,7 +14,6 @@
               <mat-error>This field is required, should start with any character exclude whitespace, minlength 2 symbols</mat-error>
             </mat-form-field>
             <button button="submit" class="search-button" mat-raised-button color="primary" type="submit">Search</button>
-              <!-- <input type="text" class="form-control" placeholder="Search" autofocus> -->
           </form>
         </ng-container>
       </div>
