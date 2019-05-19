@@ -59,11 +59,16 @@ const routes: Routes = [
     component: LeadsComponent,
     canActivate: [AuthCanActivate]
   },
-  {
-    path: "leads/search/:search_text",
-    component: LeadsComponent,
-    canActivate: [AuthCanActivate]
-  },
+  // {
+  //   path: "leads?search=:search",
+  //   component: LeadsComponent,
+  //   canActivate: [AuthCanActivate]
+  // },
+  // {
+  //   path: "leads/search/:search_text",
+  //   component: LeadsComponent,
+  //   canActivate: [AuthCanActivate]
+  // },
   {
     path: "leads/create",
     component: CreateLeadComponent,

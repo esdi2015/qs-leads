@@ -61,10 +61,10 @@ export class AppComponent implements OnInit {
     if (this.form_search.valid) {
       const text = this.form_search.value.search_leads;
       if (text) {
-        this.router.navigate( ["/leads/search/" + text] );
+        this.router.navigate( ["/leads"], { queryParams: { search: text } } );
       } else {
         return;
-      }    
+      }
     } else {
       // console.log(this.form_search.valid);
     }

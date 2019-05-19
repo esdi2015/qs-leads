@@ -6,7 +6,7 @@
       </button>
       <span>LeadSpeed</span>
       <span class="toolbar-spacer"></span>
-      <div *ngIf="router.url.includes('/leads/search') || router.url === '/leads'">
+      <div *ngIf="router.url.includes('/leads/search') || router.url === '/leads' || router.url.includes('/leads?search=')">
         <ng-container>
           <form fxLayout="row" fxLayoutAlign="center center" fxFill [formGroup]="form_search" (submit)="search_leads()">
             <mat-form-field class="search-form">

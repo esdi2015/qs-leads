@@ -71,7 +71,6 @@ export class CreateCampaignComponent implements OnInit {
         if (routeUrl.indexOf("clone") !== -1) {
           this.isClone = true;
         }
-        // console.log(params);
         if (params.id) {
           this.loading = true;
           this.isEdit = true;

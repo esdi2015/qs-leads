@@ -28,6 +28,12 @@ export class LeadsComponent implements OnInit, OnChanges {
     private router: Router,
     private route: ActivatedRoute,
   ) {
+    // this.route.queryParams.subscribe(params => {
+    //   if (params.search) {
+    //       this.api.searchText = params.search;
+    //       //this.appTable.refresh();
+    //   }
+    // });
     this.api = {
       serviceName: "leadsService",
       serviceCall: "list"
@@ -104,9 +110,17 @@ export class LeadsComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
+    console.log(this.route.params);
+    console.log(this.route.queryParams);
     this.route.params.subscribe(params => {
       if (params.search_text) {
           this.api.searchText = params.search_text;
+          this.appTable.refresh();
+      }
+    });
+    this.route.queryParams.subscribe(params => {
+      if (params.search) {
+          this.api.searchText = params.search;
           this.appTable.refresh();
       }
     });
