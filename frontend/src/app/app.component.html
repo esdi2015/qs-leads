@@ -8,7 +8,8 @@
       <span class="toolbar-spacer"></span>
       <div *ngIf="router.url.includes('/leads/search') || router.url === '/leads' || router.url.includes('/leads?search=')">
         <ng-container>
-          <form fxLayout="row" fxLayoutAlign="center center" fxFill [formGroup]="form_search" (submit)="search_leads()">
+          <form fxLayout="row" fxLayoutAlign="center center" fxFill [formGroup]="form_search" 
+          (keyup)="search_leads()" (submit)="search_leads()">
             <mat-form-field class="search-form">
               <input matInput placeholder="Search Leads" formControlName="search_leads" type="text" minlength="2">
               <mat-error>This field is required, should start with any character exclude whitespace, minlength 2 symbols</mat-error>
@@ -24,7 +25,7 @@
         <button mat-raised-button color="primary" *ngSwitchCase="'/leads'" routerLink="/leads/create">Create Job</button>
         <button mat-raised-button color="primary" *ngSwitchCase="'/users'" routerLink="/users/create">Create User</button>
       </div>
-      <div *ngIf="router.url.includes('/leads/search')">
+      <div *ngIf="router.url.includes('/leads?search=')">
         <button mat-raised-button color="primary" routerLink="/leads/create">Create Job</button>
       </div>
       <button mat-icon-button [matMenuTriggerFor]="menu">

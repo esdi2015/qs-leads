@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, SimpleChanges } from "@angular/core";
 import { FormBuilder, Validators, FormGroup } from "@angular/forms";
 import { Router, ActivatedRoute } from "@angular/router";
 import { AuthService } from "./services/auth.service";
@@ -32,7 +32,17 @@ export class AppComponent implements OnInit {
     this.form_search = this.fbls.group({
       search_leads: ["", [Validators.minLength(2), Validators.pattern(new RegExp(/^[^\s]/i))]]
     });
+    this.form_search.setValue({"search_leads": ""});
   }
+
+  // ngOnChanges(changes: SimpleChanges) {
+  //   for (let propName in changes) {
+  //     let chng = changes[propName];
+  //     let cur  = JSON.stringify(chng.currentValue);
+  //     let prev = JSON.stringify(chng.previousValue);
+  //     console.log(`${propName}: currentValue = ${cur}, previousValue = ${prev}`);
+  //   }
+  // }
 
   toggleSideNav() {
     this.sidenavOpened = !this.sidenavOpened;
@@ -63,7 +73,7 @@ export class AppComponent implements OnInit {
       if (text) {
         this.router.navigate( ["/leads"], { queryParams: { search: text } } );
       } else {
-        return;
+        this.router.navigateByUrl("/leads");
       }
     } else {
       // console.log(this.form_search.valid);
