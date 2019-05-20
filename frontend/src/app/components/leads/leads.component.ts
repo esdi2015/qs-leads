@@ -92,11 +92,15 @@ export class LeadsComponent implements OnInit, OnChanges {
             window.location.href = `${environment.api}leads/download/${
               row.id
             }`;
+          },
+          refresh: (row: any) => {
+            this.appTable.refresh();
           }
         },
         conditions: {
           result: (row: any) => !["Started", "Pending"].includes(row.status),
-          download: (row: any) => !["Started", "Pending"].includes(row.status)
+          download: (row: any) => !["Started", "Pending"].includes(row.status),
+          refresh: (row: any) => !["Finished"].includes(row.status)
         }
       }
     ];

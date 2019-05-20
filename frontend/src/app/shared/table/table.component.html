@@ -28,6 +28,7 @@
             <button mat-button (click)="column.actions.run(row)" *ngIf="column.actions.run && column.conditions && column.conditions.run">RUN</button>
             <button mat-button (click)="column.actions.result(row)" *ngIf="column.actions.result && column.conditions && column.conditions.result(row)">RESULTS</button>
             <button mat-button (click)="column.actions.download(row)" *ngIf="column.actions.download && column.conditions && column.conditions.download(row)">DOWNLOAD</button>
+            <button mat-button (click)="column.actions.refresh(row)" *ngIf="column.actions.refresh && column.conditions && column.conditions.refresh(row)">Refresh Job Status</button>
           </ng-container>
         </td>
       </ng-container>
