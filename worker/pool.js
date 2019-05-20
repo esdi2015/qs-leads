@@ -72,6 +72,9 @@ class Pool {
 
     const options = { url: campaign.url, method: "post", form: formData };
     const callback = (error, response, body) => {
+      // console.log(error);
+      // console.log(response);
+      // console.log(body);
       this.db.collection("leads").updateOne(
         { _id: lead._id, "progress.id": jobNumber },
         {
@@ -80,8 +83,8 @@ class Pool {
               lead.data[jobNumber].value['EM'] != undefined ? lead.data[jobNumber].value['EM'] :
               (lead.data[jobNumber].value['Email'] != undefined ? lead.data[jobNumber].value['Email'] : 'not set'),
             "progress.$.status":
-              error || response.statusCode !== 200 ? "Error" : "Success",
-            "progress.$.response": body
+              error || response.statusCode !== 200  || !body.includes('GlobalDataCaptureKey') ? "Error" : "Success",
+            "progress.$.response": body.includes('GlobalDataCaptureKey') ? body : "incorrect campaign URL"
           }
         },
         (err, result) => {}

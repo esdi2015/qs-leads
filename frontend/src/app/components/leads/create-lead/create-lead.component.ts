@@ -171,7 +171,7 @@ export class CreateLeadComponent implements OnInit {
   }
 
   submit() {
-    console.log(this.authService.current);
+    // console.log(this.authService.current);
     if (this.form.valid) {
       this.working = true;
       const formData = new FormData();
