@@ -17,7 +17,11 @@ table {
 }
 
 td {
-  padding: 8px !important;
+  padding: 8px 16px 8px 0px!important;
+}
+
+td:first-child {
+  padding-left: 16px!important;
 }
 
 .loading-shade {
