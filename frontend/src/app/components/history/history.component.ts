@@ -27,7 +27,7 @@ export class HistoryComponent implements OnInit {
     private dialog: MatDialog,
     private historyService: LeadsService,
     private snackBar: MatSnackBar
-  ) { 
+  ) {
     this.api = {
       serviceName: "historyService",
       serviceCall: "list"
@@ -37,6 +37,7 @@ export class HistoryComponent implements OnInit {
         key: "user",
         header: "User",
         sort: true,
+        search: true,
         cell: (row: any) => { if (row.user) {return `${row.user.firstName} ${row.user.lastName}`} else return "None" }
       },
       // {
@@ -53,6 +54,7 @@ export class HistoryComponent implements OnInit {
       {
         key: "campaign",
         header: "Campaign",
+        search: true,
         cell: (row: any) => { if (row.campaign != null) { return `${row.campaign.name}` } else return "None" }
       },
       {

@@ -9,9 +9,9 @@
       <div *ngIf="router.url.includes('/leads/search') || router.url === '/leads' || router.url.includes('/leads?search=')">
         <ng-container>
           <form fxLayout="row" fxLayoutAlign="center center" fxFill [formGroup]="form_search" 
-          (keyup)="search_leads()" (submit)="search_leads()">
+          (keyup)="search_leads()" (submit)="search_leads($event)">
             <mat-form-field class="search-form">
-              <input matInput placeholder="Search Leads" formControlName="search_leads" type="text" minlength="2">
+              <input matInput placeholder="Search Leads" formControlName="search_leads" type="text">
               <mat-error>This field is required, should start with any character exclude whitespace, minlength 2 symbols</mat-error>
             </mat-form-field>
             <button button="submit" class="search-button" mat-raised-button color="primary" type="submit">Search</button>

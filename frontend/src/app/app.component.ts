@@ -13,11 +13,9 @@ export class AppComponent implements OnInit {
   public form: FormGroup;
   public sidenavOpened = true;
   public form_search: FormGroup;
-  // public showSearchForm = false;
 
   constructor(
     public router: Router,
-    // private route: ActivatedRoute,
     public auth: AuthService,
     private fb: FormBuilder,
     private fbls: FormBuilder,
@@ -30,19 +28,15 @@ export class AppComponent implements OnInit {
       password: ["", Validators.required]
     });
     this.form_search = this.fbls.group({
-      search_leads: ["", [Validators.minLength(2), Validators.pattern(new RegExp(/^[^\s]/i))]]
+      search_leads: ["",
+        [
+          Validators.minLength(2),
+          Validators.pattern(new RegExp(/^[^\s].+/i))
+        ]
+      ]
     });
     this.form_search.setValue({"search_leads": ""});
   }
-
-  // ngOnChanges(changes: SimpleChanges) {
-  //   for (let propName in changes) {
-  //     let chng = changes[propName];
-  //     let cur  = JSON.stringify(chng.currentValue);
-  //     let prev = JSON.stringify(chng.previousValue);
-  //     console.log(`${propName}: currentValue = ${cur}, previousValue = ${prev}`);
-  //   }
-  // }
 
   toggleSideNav() {
     this.sidenavOpened = !this.sidenavOpened;
@@ -67,16 +61,24 @@ export class AppComponent implements OnInit {
     });
   }
 
-  search_leads(): void {
+  search_leads(event: any): void {
+    const text = this.form_search.value.search_leads;
+
+    if (text === "" && (event && event.type === "submit"))  {
+      // this.form_search.setErrors({isEmpty: true});
+      this.snackBar.open("Search field can't be empty", "Dismiss", { duration: 5000 });
+      return;
+    }
+
     if (this.form_search.valid) {
-      const text = this.form_search.value.search_leads;
-      if (text) {
+      if (text && text !== "") {
         this.router.navigate( ["/leads"], { queryParams: { search: text } } );
       } else {
+        this.form_search.setValue({"search_leads": ""});
         this.router.navigateByUrl("/leads");
       }
     } else {
-      // console.log(this.form_search.valid);
+      // console.log(this.form_search.errors);
     }
   }
 }
