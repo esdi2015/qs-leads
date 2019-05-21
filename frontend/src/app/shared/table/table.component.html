@@ -9,8 +9,13 @@
       matSortDirection="desc">
       <!-- Number Column -->
       <ng-container [matColumnDef]="column.key" *ngFor="let column of columns">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear [disabled]="!column.sort">{{ column.header
-          }}</th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear [disabled]="!column.sort">
+          <div class="table-header-label">{{ column.header}}</div>
+          <mat-form-field class="filter" floatLabel="never" *ngIf="column.search">
+            <mat-label>Search</mat-label>
+            <input matInput [formControl]="Filter">
+          </mat-form-field>
+        </th>
         <!-- <td mat-cell *matCellDef="let search">111</td> -->
         <td mat-cell *matCellDef="let row">
           <ng-container *ngIf="!column.actions">

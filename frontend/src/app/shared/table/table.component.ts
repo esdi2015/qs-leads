@@ -1,6 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Component, OnInit, ViewChild, Input } from "@angular/core";
-import { MatPaginator, MatSort } from "@angular/material";
+import { FormControl } from "@angular/forms";
+import { MatPaginator, MatSort, MatFormField, MatInput} from "@angular/material";
 import { merge, Observable, of as observableOf } from "rxjs";
 import { catchError, map, startWith, switchMap } from "rxjs/operators";
 import { ClientsService } from "../../services/clients.service";
@@ -30,6 +31,8 @@ export class TableComponent implements OnInit {
   paginator: MatPaginator;
   @ViewChild(MatSort)
   sort: MatSort;
+
+  Filter = new FormControl("");
 
   constructor(
     private clientsService: ClientsService,

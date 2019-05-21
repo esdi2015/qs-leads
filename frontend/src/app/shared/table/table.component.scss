@@ -16,12 +16,44 @@ table {
   width: 100%;
 }
 
+th:first-child {
+  padding-left: 20px!important;
+}
+
 td {
   padding: 8px 16px 8px 0px!important;
 }
 
 td:first-child {
   padding-left: 16px!important;
+}
+
+.filter {
+  display: inline-block;
+}
+
+.table-header-label {
+  display: inline-block;
+}
+
+::ng-deep .mat-sort-header-container {
+  padding-top: 10px;
+}
+
+::ng-deep .mat-sort-header-button {
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start !important;
+}
+
+::ng-deep .mat-sort-header-arrow {
+  align-self: flex-start;
+  margin: 0 8px 0 5px !important;
+
+}
+
+::ng-deep .mat-form-field-infix {
+  width:auto !important;
 }
 
 .loading-shade {
