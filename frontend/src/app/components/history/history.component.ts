@@ -95,6 +95,7 @@ export class HistoryComponent implements OnInit {
 
   ngOnInit() {
     this.route.queryParams.subscribe(params => {
+      this.api.queryFilters = [];
       if (params.user) {
         this.api.queryFilters.push({"user": params.user});
       }
@@ -108,7 +109,6 @@ export class HistoryComponent implements OnInit {
         this.api.queryFilters.push({"filename": params.filename});
       }
       this.appTable.refresh();
-      this.api.queryFilters = [];
     });
   }
 
@@ -143,10 +143,10 @@ export class HistoryComponent implements OnInit {
       text = this.filters.filenameFilter.value;
       queryParams["filename"] = text;
     }
-    //const text = this.form_search.value.search_leads;
+    // const text = this.form_search.value.search_leads;
 
-    console.log(text);
-    console.log(queryParams);
+    // console.log(text);
+    // console.log(queryParams);
     if (text.length > 2) {
       this.router.navigate( ["/history"], { queryParams: queryParams } );
     } else {

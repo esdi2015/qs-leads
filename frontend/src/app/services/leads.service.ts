@@ -11,7 +11,7 @@ export class LeadsService {
   public list(sort: string, direction: string, page: number, search_text: string = "", filters: any[] = []) {
     // console.log(filters);
     if (filters.length > 0) {
-      let filters_array = [];
+      const filters_array = [];
       let filters_string = "";
       for (const {item, index} of filters.map((item, index) => ({ item, index }))) {
         Object.keys(item).forEach(key => {
