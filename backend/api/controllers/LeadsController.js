@@ -15,6 +15,72 @@ module.exports = {
       const direction = (req.query.direction || 'DESC').toUpperCase();
       const page = req.query.page || 0;
       const search = req.query.search || '';
+      const user = req.query.user || '';
+      const client = req.query.client || '';
+      const campaign = req.query.campaign || '';
+      const filename = req.query.filename || '';
+
+      // console.log(user + 'user');
+      // console.log(client + 'client');
+      // console.log(campaign + 'campaign');
+      // console.log(filename + 'filename');
+
+      // if (campaign !== '') {
+      //   const leads = await Leads.find()
+      //   .populate('client')
+      //   .populate('campaign', {
+      //     where: {
+      //       name: { 'contains' : campaign }
+      //     }})
+      //     .populate('user')
+      //     .sort(`${sort} ${direction}`)
+      //     .limit(10)
+      //     .skip(page * 10);
+
+      //   const leadsTotal = await Leads.count().populate('campaign', {
+      //     where: {
+      //       name: { 'contains' : campaign }
+      //     }});
+      //   return res.ok({
+      //     content: leads,
+      //     metadata: {
+      //       total: leadsTotal
+      //     }
+      //   });
+      // }
+
+
+      if (filename !== '') {
+        const leads = await Leads.find({
+          or : [
+            { filename: { 'contains' : filename } },
+            { filename: { 'contains' : filename.toUpperCase() } },
+            { filename: { 'contains' : filename.toLowerCase() } },
+            { filename: { 'contains' : filename.charAt(0).toUpperCase() + filename.slice(1).toLowerCase()} }
+          ]
+        })
+        .populate('client')
+        .populate('campaign')
+          .sort(`${sort} ${direction}`)
+          .limit(10)
+          .skip(page * 10);
+
+        const leadsTotal = await Leads.count({
+          or : [
+            { filename: { 'contains' : filename } },
+            { filename: { 'contains' : filename.toUpperCase() } },
+            { filename: { 'contains' : filename.toLowerCase() } },
+            { filename: { 'contains' : search.charAt(0).toUpperCase() + filename.slice(1).toLowerCase()} }
+          ]
+        });
+
+        return res.ok({
+          content: leads,
+          metadata: {
+            total: leadsTotal
+          }
+        });
+      }
 
       if (search === '') {
         const leads = await Leads.find()

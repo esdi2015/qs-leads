@@ -8,7 +8,21 @@ import { environment } from "../../environments/environment.prod";
 export class LeadsService {
   constructor(private http: HttpClient) {}
 
-  public list(sort: string, direction: string, page: number, search_text: string = "") {
+  public list(sort: string, direction: string, page: number, search_text: string = "", filters: any[] = []) {
+    // console.log(filters);
+    if (filters.length > 0) {
+      let filters_array = [];
+      let filters_string = "";
+      for (const {item, index} of filters.map((item, index) => ({ item, index }))) {
+        Object.keys(item).forEach(key => {
+          filters_array.push(key + "=" + item[key]);
+        });
+      }
+      filters_string = filters_array.join("&");
+      return this.http.get(
+        `${environment.api}leads?sort=${sort}&direction=${direction}&page=${page}&${filters_string}`
+      );
+    }
     if (search_text === "") {
       return this.http.get(
         `${environment.api}leads?sort=${sort}&direction=${direction}&page=${page}`

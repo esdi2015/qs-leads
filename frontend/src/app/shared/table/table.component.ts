@@ -20,7 +20,7 @@ export class TableComponent implements OnInit {
   @Input()
   displayedColumns: string[];
   @Input()
-  api: { serviceName: string; serviceCall: string; searchText: string };
+  api: { serviceName: string; serviceCall: string; searchText: string; queryFilters: []};
 
   data: any[] = [];
 
@@ -32,7 +32,7 @@ export class TableComponent implements OnInit {
   @ViewChild(MatSort)
   sort: MatSort;
 
-  Filter = new FormControl("");
+  // Filter = new FormControl("");
 
   constructor(
     private clientsService: ClientsService,
@@ -61,6 +61,14 @@ export class TableComponent implements OnInit {
               this.sort.direction,
               this.paginator.pageIndex,
               this.api.searchText
+            );
+          } else if (this.api.queryFilters) {
+            return this[this.api.serviceName]![this.api.serviceCall](
+              this.sort.active || "createdAt",
+              this.sort.direction,
+              this.paginator.pageIndex,
+              "",
+              this.api.queryFilters
             );
           } else {
             return this[this.api.serviceName]![this.api.serviceCall](
