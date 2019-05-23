@@ -143,32 +143,18 @@ export class HistoryComponent implements OnInit {
       text = this.filters.filenameFilter.value;
       queryParams["filename"] = text;
     }
-    // const text = this.form_search.value.search_leads;
 
-    // console.log(text);
-    // console.log(queryParams);
     if (text.length > 2) {
       this.router.navigate( ["/history"], { queryParams: queryParams } );
+      // tslint:disable-next-line: forin
+      for (const key in this.filters) {
+        if (key !== String(filter + "Filter")) {
+          this.filters[key].reset();
+        }
+      }
     } else {
       this.router.navigateByUrl("/history");
     }
-
-    // if (text === "" && (event && event.type === "submit"))  {
-    //   // this.form_search.setErrors({isEmpty: true});
-    //   this.snackBar.open("Search field can't be empty", "Dismiss", { duration: 5000 });
-    //   return;
-    // }
-
-    // if (this.form_search.valid) {
-    //   if (text && text !== "") {
-    //     this.router.navigate( ["/leads"], { queryParams: { search: text } } );
-    //   } else {
-    //     this.form_search.setValue({"search_leads": ""});
-    //     this.router.navigateByUrl("/leads");
-    //   }
-    // } else {
-    //   // console.log(this.form_search.errors);
-    // }
   }
 
 }

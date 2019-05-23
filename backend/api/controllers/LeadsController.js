@@ -20,35 +20,107 @@ module.exports = {
       const campaign = req.query.campaign || '';
       const filename = req.query.filename || '';
 
-      // console.log(user + 'user');
-      // console.log(client + 'client');
-      // console.log(campaign + 'campaign');
-      // console.log(filename + 'filename');
+      const db = Leads.getDatastore().manager;
 
-      // if (campaign !== '') {
-      //   const leads = await Leads.find()
-      //   .populate('client')
-      //   .populate('campaign', {
-      //     where: {
-      //       name: { 'contains' : campaign }
-      //     }})
-      //     .populate('user')
-      //     .sort(`${sort} ${direction}`)
-      //     .limit(10)
-      //     .skip(page * 10);
+      if (user !== '') {
+        let tempIds = [];
+        let users = await db.collection(Users.tableName)
+        .find(
+          {$or: [
+            { firstName: {$regex: new RegExp(`${user}`, 'i') } },
+            { lastName: {$regex: new RegExp(`${user}`, 'i') } }
+          ]}, {'_id': 1}
+        )
+        .toArray()
+        .then(items => {
+          items.forEach( (i) => { tempIds.push(String(i['_id'])); });
+          return items;
+        });
 
-      //   const leadsTotal = await Leads.count().populate('campaign', {
-      //     where: {
-      //       name: { 'contains' : campaign }
-      //     }});
-      //   return res.ok({
-      //     content: leads,
-      //     metadata: {
-      //       total: leadsTotal
-      //     }
-      //   });
-      // }
+        const leads = await Leads.find(
+          { user: tempIds }
+        )
+        .populate('client')
+        .populate('campaign')
+        .populate('user')
+          .sort(`${sort} ${direction}`)
+          .limit(10)
+          .skip(page * 10);
 
+        const leadsTotal = await Leads.count(
+          { user: tempIds }
+        );
+
+        return res.ok({
+          content: leads,
+          metadata: {
+            total: leadsTotal
+          }
+        });
+      }
+
+      if (client !== '') {
+        let tempIds = [];
+        let clients = await db.collection(Clients.tableName)
+        .find({ name: {$regex: new RegExp(`${client}`, 'i') }}, {'name': 1})
+        .toArray()
+        .then(items => {
+          items.forEach( (i) => { tempIds.push(String(i['_id'])); });
+          return items;
+        });
+
+        const leads = await Leads.find(
+          { client: tempIds }
+        )
+        .populate('client')
+        .populate('campaign')
+        .populate('user')
+          .sort(`${sort} ${direction}`)
+          .limit(10)
+          .skip(page * 10);
+
+        const leadsTotal = await Leads.count(
+          { client: tempIds }
+        );
+
+        return res.ok({
+          content: leads,
+          metadata: {
+            total: leadsTotal
+          }
+        });
+      }
+
+      if (campaign !== '') {
+        const campaigns = await db.collection(Campaigns.tableName)
+        .find({ name: {$regex: new RegExp(`${campaign}`, 'i') }}, {'name': 1})
+        .toArray();
+
+        let tempIds = campaigns.map((val)=>{
+          return String(val['_id']);
+        });
+
+        const leads = await Leads.find(
+          { campaign: tempIds }
+        )
+        .populate('client')
+        .populate('campaign')
+        .populate('user')
+          .sort(`${sort} ${direction}`)
+          .limit(10)
+          .skip(page * 10);
+
+        const leadsTotal = await Leads.count(
+          { campaign: tempIds }
+        );
+
+        return res.ok({
+          content: leads,
+          metadata: {
+            total: leadsTotal
+          }
+        });
+      }
 
       if (filename !== '') {
         const leads = await Leads.find({
@@ -61,6 +133,7 @@ module.exports = {
         })
         .populate('client')
         .populate('campaign')
+        .populate('user')
           .sort(`${sort} ${direction}`)
           .limit(10)
           .skip(page * 10);
@@ -86,7 +159,7 @@ module.exports = {
         const leads = await Leads.find()
         .populate('client')
         .populate('campaign')
-          .populate('user')
+        .populate('user')
           .sort(`${sort} ${direction}`)
           .limit(10)
           .skip(page * 10);
@@ -109,6 +182,7 @@ module.exports = {
         })
         .populate('client')
         .populate('campaign')
+        .populate('user')
           .sort(`${sort} ${direction}`)
           .limit(10)
           .skip(page * 10);
