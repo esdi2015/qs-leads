@@ -35,6 +35,9 @@ module.exports = {
         .then(items => {
           items.forEach( (i) => { tempIds.push(String(i['_id'])); });
           return items;
+        })
+        .catch(err => {
+          console.log(err); 
         });
 
         const leads = await Leads.find(
