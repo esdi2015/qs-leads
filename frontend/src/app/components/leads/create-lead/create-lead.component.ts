@@ -7,7 +7,7 @@ import {
 } from "@angular/animations";
 import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { MatDialog, MatSnackBar } from "@angular/material";
+import { MatDialog, MatSnackBar, MatCheckboxModule } from "@angular/material";
 import { ActivatedRoute, Router } from "@angular/router";
 import { LeadsService } from "src/app/services/leads.service";
 import { CampaignsService } from "../../../services/campaigns.service";
