@@ -65,7 +65,6 @@ export class AppComponent implements OnInit {
     const text = this.form_search.value.search_leads;
 
     if (text === "" && (event && event.type === "submit"))  {
-      // this.form_search.setErrors({isEmpty: true});
       this.snackBar.open("Search field can't be empty", "Dismiss", { duration: 5000 });
       return;
     }

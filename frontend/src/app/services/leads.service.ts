@@ -9,7 +9,6 @@ export class LeadsService {
   constructor(private http: HttpClient) {}
 
   public list(sort: string, direction: string, page: number, search_text: string = "", filters: any[] = []) {
-    // console.log(filters);
     if (filters.length > 0) {
       const filters_array = [];
       let filters_string = "";

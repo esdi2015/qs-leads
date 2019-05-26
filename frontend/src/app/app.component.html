@@ -18,21 +18,19 @@
           </form>
         </ng-container>
       </div>
-      <div *ngIf="router.url === '/campaigns'" style="display: flex;width: 500px;">
+      <div *ngIf="router.url === '/campaigns' || router.url.includes('/campaigns?')" style="display: flex;width: 500px;">
         <mat-card style="padding: 5px 15px 5px 25px;">
           <mat-card-content>
-              <!-- <section class="example-section">
-                <mat-checkbox class="example-margin">All Campaigns</mat-checkbox>
-                <mat-checkbox class="example-margin">Live</mat-checkbox>
-                <mat-checkbox class="example-margin">Stopped</mat-checkbox>
-                <mat-checkbox class="example-margin">Finished</mat-checkbox>
-              </section> -->
               <section class="example-section">
                   <b>Show</b>:
-                  <button mat-button color="warn" routerLink="/campaigns">All Campaigns</button>
-                  <button mat-button routerLink="/campaigns">Live</button>
-                  <button mat-button routerLink="/campaigns">Stopped</button>
-                  <button mat-button routerLink="/campaigns">Finished</button>
+                  <button mat-button [color]="!router.url.includes('status=') ? 'warn' : false" 
+                      routerLink="/campaigns">All Campaigns</button>
+                  <button mat-button [color]="router.url.includes('status=live') ? 'warn' : false" 
+                      routerLink="/campaigns" [queryParams]="{status: 'live'}">Live</button>
+                  <button mat-button [color]="router.url.includes('status=stopped') ? 'warn' : false" 
+                      routerLink="/campaigns" [queryParams]="{status: 'stopped'}">Stopped</button>
+                  <button mat-button [color]="router.url.includes('status=finished') ? 'warn' : false" 
+                      routerLink="/campaigns" [queryParams]="{status: 'finished'}">Finished</button>
                 </section>
             </mat-card-content>
         </mat-card>
@@ -46,6 +44,10 @@
       </div>
       <div *ngIf="router.url.includes('/leads?search=')">
         <button mat-raised-button color="primary" routerLink="/leads/create">Create Job</button>
+      </div>
+      <div *ngIf="router.url.includes('/campaigns?')">
+        <button mat-raised-button color="primary" routerLink="/campaigns/create">Create
+          Campaign</button>
       </div>
       <button mat-icon-button [matMenuTriggerFor]="menu">
         <mat-icon>more_vert</mat-icon>

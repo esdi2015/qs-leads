@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
 import { TableComponent } from "src/app/shared/table/table.component";
-import { Router } from "@angular/router";
+import { Router, ActivatedRoute } from "@angular/router";
 import { MatDialog, MatSnackBar } from "@angular/material";
 import { CampaignsService } from "src/app/services/campaigns.service";
 import { DialogQuestionComponent } from "src/app/shared/dialog-question/dialog-question.component";
@@ -27,7 +27,8 @@ export class CampaignsComponent implements OnInit {
     private router: Router,
     private dialog: MatDialog,
     private campaignsService: CampaignsService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private route: ActivatedRoute,
   ) {
     this.api = {
       serviceName: "campaignsService",
@@ -107,5 +108,13 @@ export class CampaignsComponent implements OnInit {
     ];
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.route.queryParams.subscribe(params => {
+      this.api.queryFilters = [];
+      if (params.status) {
+        this.api.queryFilters.push({"status": params.status});
+      }
+      this.appTable.refresh();
+    });
+  }
 }

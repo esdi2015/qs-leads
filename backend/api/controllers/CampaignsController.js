@@ -14,13 +14,20 @@ module.exports = {
       const sort = req.query.sort || 'createdAt';
       const direction = (req.query.direction || 'DESC').toUpperCase();
       const page = req.query.page || 0;
+      const status = req.query.status || '';
 
-      const campaigns = await Campaigns.find()
+      let condition = {};
+      if (status && status !== '') {
+        condition = { status: status };
+      }
+
+      const campaigns = await Campaigns.find(condition)
         .sort(`${sort} ${direction}`)
         .limit(10)
         .skip(page * 10)
         .populate('client');
-      const campaignsTotal = await Campaigns.count();
+
+      const campaignsTotal = await Campaigns.count(condition);
       return res.ok({
         content: campaigns,
         metadata: {
