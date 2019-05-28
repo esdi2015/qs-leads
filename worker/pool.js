@@ -13,6 +13,12 @@ class Pool {
   /**
    * Startup check
    */
+  // .find({ 
+  //   $or: [
+  //   {status: { $regex: "^Pending" }},
+  //   {status: { $regex: "^Processing" }}
+  //   ]
+  // })
   startup() {
     this.db
       .collection("leads")
@@ -21,6 +27,7 @@ class Pool {
         status: { $regex: "^Processing" }
       })
       .toArray((err, leads) => {
+        // console.log(leads);
         console.log(
           `Found ${
             leads.length
