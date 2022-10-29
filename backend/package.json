@@ -19,10 +19,10 @@
     "sails": "^1.1.0",
     "sails-hook-grunt": "^3.0.2",
     "sails-hook-orm": "^2.1.1",
-    "sails-hook-sockets": "^1.5.5",
+    "sails-hook-sockets": "^2.0.3",
     "sails-mongo": "^1.0.1",
-    "socket.io": "^2.1.1",
-    "socket.io-client": "^2.1.1"
+    "socket.io": "^2.5.0",
+    "socket.io-client": "^2.5.0"
   },
   "devDependencies": {
     "@sailshq/eslint": "^4.19.3"
