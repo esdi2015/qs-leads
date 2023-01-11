@@ -17,7 +17,7 @@
     "node-xlsx": "^0.12.1",
     "papaparse": "^4.6.0",
     "sails": "^1.1.0",
-    "sails-hook-grunt": "^3.0.2",
+    "sails-hook-grunt": "^5.0.0",
     "sails-hook-orm": "^2.1.1",
     "sails-hook-sockets": "^1.5.5",
     "sails-mongo": "^1.0.1",
